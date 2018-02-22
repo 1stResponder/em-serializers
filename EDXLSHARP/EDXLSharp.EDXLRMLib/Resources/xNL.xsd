@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="urn:oasis:names:tc:ciq:xnl:3" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xlink="http://www.w3.org/1999/xlink1" xmlns:ct="urn:oasis:names:tc:ciq:ct:3" targetNamespace="urn:oasis:names:tc:ciq:xnl:3" elementFormDefault="qualified" attributeFormDefault="qualified">
+	<xs:annotation>
+		<xs:documentation> 
+		Specification Name: OASIS CIQ TC - extensible Name Language (xNL) 
+		Description: Defines the W3C schema for representing party names (Person or Organisation)
+		(Using XML Schema based standard code list/enumeration mechanism - OPTION 1 AND DEFAULT)
+		Produced by: OASIS Customer Information Quality Technical Committee
+		URL: http://www.oasis-open.org/committees/ciq
+		Version: 3.0  
+		Status: Committee Specification
+		Copyright: 2007-08, OASIS, http://www.oasis-open.org
+		Last Modified: 15 November 2007
+		Last Modified by: Ram Kumar, Chair, OASIS CIQ TC 
+		
+		NOTE: Do not modify this schema as it will break specifications compatibility 
+		</xs:documentation>
+	</xs:annotation>
+	<xs:include schemaLocation="xNL-types.xsd"/>
+	<xs:import namespace="urn:oasis:names:tc:ciq:ct:3" schemaLocation="CommonTypes.xsd"/>
+	<xs:import namespace="http://www.w3.org/1999/xlink1" schemaLocation="xlink-2003-12-31.xsd"/>
+	<xs:attributeGroup name="grNameKey">
+		<xs:annotation>
+			<xs:documentation>Reference to another Person Name or Organisation Name with primary and foreign key reinforcement. </xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="NameKey" type="ct:String">
+			<xs:annotation>
+				<xs:documentation>A primary key to reference Party Name.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="NameKeyRef" type="ct:String">
+			<xs:annotation>
+				<xs:documentation>A foreign key to reference attribute Key of Party Name.</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:complexType name="PartyNameType">
+		<xs:annotation>
+			<xs:documentation>Reusable complex type for a party. A party is a person or an organisation</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element ref="NameLine" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="PersonName" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Container for person name details. Same person with many types (e.g. alias, pet name, nick name)  of names can be used by this container.  </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="PersonNameType"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="OrganisationName" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>A container for organisation name details. Same organisaion with many types of names can be used by this container</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:complexContent>
+						<xs:extension base="OrganisationNameType"/>
+					</xs:complexContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="PartyNameID" type="ct:String">
+			<xs:annotation>
+				<xs:documentation>A unique identifier of a party</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="PartyNameIDType" type="PartyNameIDTypeList">
+			<xs:annotation>
+				<xs:documentation>Type of Party Name ID</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:complexType name="PersonNameType">
+		<xs:annotation>
+			<xs:documentation>Reusable complex type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NameElement" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Name or part of a name. </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ct:String">
+							<xs:attribute name="ElementType" type="PersonNameElementList">
+								<xs:annotation>
+									<xs:documentation>Clarifies the meaning of the element.Could be first name, middle name, etc. that is defined in the List list. Omit this attribute if the type of the name element is not known.</xs:documentation>
+								</xs:annotation>
+							</xs:attribute>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="OrganisationNameType">
+		<xs:annotation>
+			<xs:documentation>Reusable complex type</xs:documentation>
+		</xs:annotation>
+		<xs:sequence>
+			<xs:element name="NameElement" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Name of the organisation. E.g. ACME Inc.</xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ct:String"/>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="SubDivisionName" minOccurs="0" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Name of a subdivision of an organisation (e.g. department) </xs:documentation>
+				</xs:annotation>
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="ct:String"/>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="OrganisationID" type="ct:String">
+			<xs:annotation>
+				<xs:documentation>A unique identifier of an organisation</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attribute name="OrganisationIDType" type="OrganisationIDTypeList">
+			<xs:annotation>
+				<xs:documentation>Type of identifier</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:complexType>
+	<xs:element name="NameLine">
+		<xs:annotation>
+			<xs:documentation>Define name as a free format text. Use this when the type of the entity (person or organisation) is unknown, or is not broken down into individual elements (e.g. unstructured, unparsed) or is beyond the provided types. The name represented may be formatted in the right order or may not be as it is not parsed/broken into atomic fields</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:simpleContent>
+				<xs:extension base="ct:String"/>
+			</xs:simpleContent>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="PartyName" type="PartyNameType">
+		<xs:annotation>
+			<xs:documentation>Container for defining a name of a Person, an Organisation or combination of the above as a joint name.</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="PersonName" type="PersonNameType">
+		<xs:annotation>
+			<xs:documentation>Person Name</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="OrganisationName" type="OrganisationNameType">
+		<xs:annotation>
+			<xs:documentation>Organisation Name</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+</xs:schema>

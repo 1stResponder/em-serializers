@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Prefixs>
+  <emlc>http://release.niem.gov/niem/domains/emergencyManagement/3.1/emevent/0.1/emlc/</emlc>
+  <mof>http://example.com/milops/1.1/</mof>
+	<gml>http://www.opengis.net/gml/3.2</gml>
+	<rtlt>http://www.ptaccenter.org/Rtlt.Core.Api.V1</rtlt>
+	<nc>http://release.niem.gov/niem/niem-core/3.0/</nc>
+	<xls>http://release.niem.gov/niem/external/ogc/xls/1.1.0/dhs-gmo/2.1.0</xls>
+	<emevent>http://release.niem.gov/niem/domains/emergencyManagement/3.1/emevent/0.1/</emevent>
+	<maid>http://release.niem.gov/niem/domains/emergencyManagement/3.1/emevent/0.1/maid/</maid> 
+</Prefixs>

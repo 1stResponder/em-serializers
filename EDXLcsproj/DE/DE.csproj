@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E5FE3689-72CB-469E-8576-1F9B495DCD5C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.EDXL.DE</RootNamespace>
+    <AssemblyName>EMS.EDXL.DE</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>lib\net45\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>lib\net45\EMS.EDXL.DE.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\ContentObject.cs">
+      <Link>ContentObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\DEUtils.cs">
+      <Link>DEUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\DEv1_0.cs">
+      <Link>DEv1_0.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\NonXMLContentType.cs">
+      <Link>NonXMLContentType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\StatusValue.cs">
+      <Link>StatusValue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\TargetAreaType.cs">
+      <Link>TargetAreaType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\TypeValue.cs">
+      <Link>TypeValue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\ValueList.cs">
+      <Link>ValueList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\ValueScheme.cs">
+      <Link>ValueScheme.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\XMLContentType.cs">
+      <Link>XMLContentType.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CIQ\CIQ.csproj">
+      <Project>{0dc0343d-92b0-4724-94ea-fc04be168a73}</Project>
+      <Name>CIQ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CT\CT.csproj">
+      <Project>{b8a788b9-6d16-4c66-83c0-f511ee7fd81b}</Project>
+      <Name>CT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXT\EXT.csproj">
+      <Project>{088dc7bd-2b6d-4fc3-b75d-3d4ad3b6fd3f}</Project>
+      <Name>EXT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GSF\GSF.csproj">
+      <Project>{c746272f-fb43-4259-a116-20da93df247b}</Project>
+      <Name>GSF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{4fd6d1ad-d67e-4349-909f-f04986279b63}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SitRep\SitRep.csproj">
+      <Project>{978a479b-640e-450e-b551-248037d9d2a3}</Project>
+      <Name>SitRep</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{e92cadcb-9c9b-4247-a6f8-38685936a581}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

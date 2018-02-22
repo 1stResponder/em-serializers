@@ -1,0 +1,46 @@
+{
+  "name": "EMS.EDXL.DE",
+  "description": "DE Libraries for EMS",
+  "authors": [ "ArdentMC" ],
+  "title": "EMS.EDXL.DE",
+  "version": "1.0.0-*",
+  "dependencies": {
+    "EMS.EDXL.CIQ": "1.0.0-*",
+    "EMS.EDXL.CT": "1.0.0-*",
+    "EMS.EDXL.EXT": "1.0.0-*",
+    "EMS.EDXL.GSF": "1.0.0-*",
+    "EMS.EDXL.Shared": "1.0.0-*",
+    "EMS.EDXL.SitRep": "1.0.0-*",
+    "EMS.EDXL.Utilities": "1.0.0-*",
+    "EMS.NIEM.EMLC": "1.0.0-*",
+    "EMS.NIEM.Incident": "1.0.0-*",
+    "EMS.NIEM.Infrastructure": "1.0.0-*",
+    "EMS.NIEM.MutualAid": "1.0.0-*",
+    "EMS.NIEM.NIEMCommon": "1.0.0-*",
+    "EMS.NIEM.Resource": "1.0.0-*",
+    "Microsoft.EntityFrameworkCore": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Relational.Specification.Tests": "1.1.0",
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
+    "Microsoft.EntityFrameworkCore.SqlServer.Design": "1.1.0",
+    "NETStandard.Library": "1.6.1",
+    "Newtonsoft.Json": "9.0.1",
+    "Npgsql": "3.2.1",
+    "System.IO": "4.3.0"
+  },
+  "frameworks": {
+    "netstandard1.6.1": {
+      "imports": "dnxcore50"
+    }
+  },
+  "configurations": {
+    "EDXLDebug": {}
+  },
+  "packOptions": {
+    "owners": [ "ArdentMC" ],
+    "tags": [ "EDXL", "EMS", "NIEM" ]
+  },
+  "buildOptions": {
+    "xmlDoc": true
+  }
+}

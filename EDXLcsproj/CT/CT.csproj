@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{B8A788B9-6D16-4C66-83C0-F511EE7FD81B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.EDXL.CT</RootNamespace>
+    <AssemblyName>EMS.EDXL.CT</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>lib\net45\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>lib\net45\EMS.EDXL.CT.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\CTNamespaces.cs">
+      <Link>CTNamespaces.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\EDXLDateTime.cs">
+      <Link>EDXLDateTime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\EDXLString.cs">
+      <Link>EDXLString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\GeoCodeType.cs">
+      <Link>GeoCodeType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\PersonTimePairType.cs">
+      <Link>PersonTimePairType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\TimePeriod.cs">
+      <Link>TimePeriod.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\ValueKey.cs">
+      <Link>ValueKey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\ValueKeyIntPair.cs">
+      <Link>ValueKeyIntPair.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\ValueKeyStringPair.cs">
+      <Link>ValueKeyStringPair.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CT\ValueList.cs">
+      <Link>ValueList.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CIQ\CIQ.csproj">
+      <Project>{0dc0343d-92b0-4724-94ea-fc04be168a73}</Project>
+      <Name>CIQ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{4fd6d1ad-d67e-4349-909f-f04986279b63}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

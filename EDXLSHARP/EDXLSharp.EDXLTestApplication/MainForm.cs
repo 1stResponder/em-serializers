@@ -1,0 +1,2797 @@
+﻿// ———————————————————————–
+// <copyright file="MainForm.cs" company="EDXLSharp">
+//    Licensed under the Apache License, Version 2.0 (the "License");
+//    you may not use this file except in compliance with the License.
+//    You may obtain a copy of the License at
+//    http://www.apache.org/licenses/LICENSE-2.0
+//    Unless required by applicable law or agreed to in writing, software
+//    distributed under the License is distributed on an "AS IS" BASIS,
+//    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+//    See the License for the specific language governing permissions and
+//    limitations under the License.
+// </copyright>
+
+using EDXLSharp.EDXLDELib;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+using System.Xml.Linq;
+
+namespace EDXLSharp.EDXLTestApplication
+{
+  /// <summary>
+  /// Class representing the MainForm of the EDXLLib test application
+  /// </summary>
+  public partial class MainForm : Form
+  {
+    #region Private Member Variables
+
+    /// <summary>
+    /// EDXLDE object used by MainForm
+    /// </summary>
+    private EDXLDE myde;
+
+    /// <summary>
+    /// Sent Message history list
+    /// </summary>
+    private List<EDXLDE> sentHistory;
+
+    /// <summary>
+    /// Received Message history list
+    /// </summary>
+    private List<NameObject<string, EDXLDE>> receivedHistory;
+
+    /// <summary>
+    /// Application settings container
+    /// </summary>
+    private TestAppSettings settings;
+
+    /// <summary>
+    /// Default name of settings file
+    /// </summary>
+    private string settingsFile = "Settings.xml";
+
+    /// <summary>
+    /// ID index holder
+    /// </summary>
+    private int lastIDIndex;
+
+    /// <summary>
+    /// Integer value settings
+    /// </summary>
+    private int dropped, numIn, numOut, next, play;
+    
+    /// <summary>
+    /// Delay between sending of messages
+    /// </summary>
+    private int deltaT;
+    
+    /// <summary>
+    /// MessageManager object
+    /// </summary>
+    private MessageManager messageManager;
+
+    #endregion
+
+    #region Constructors
+
+    /// <summary>
+    /// Initializes a new instance of the MainForm class
+    /// </summary>
+    public MainForm()
+    {
+      this.InitializeComponent();
+      this.mBurstTimer.Stop();
+      List<string> enumTemp = new List<string>(Enum.GetNames(typeof(StatusValue)));
+
+      // Add Enum Values to ComboBoxes
+      foreach (string s in enumTemp)
+      {
+        this.mComboDistributionStatus.Items.Add(s);
+      }
+
+      enumTemp = new List<string>(Enum.GetNames(typeof(TypeValue)));
+      foreach (string s in enumTemp)
+      {
+        this.mComboDistributionType.Items.Add(s);
+      }
+
+      mTextDateTimeSent.Text = DateTime.Now.ToString("o");
+      this.settingsFile = this.settingsFile.Insert(0, Application.StartupPath + "\\");
+      if (File.Exists(this.settingsFile))
+      {
+        try
+        {
+          this.settings = new TestAppSettings(this.settingsFile);
+          this.PushLog("Settings File: " + this.settingsFile + " Loaded", Color.Lime);
+        }
+        catch (Exception)
+        {
+          this.PushLog("Error Loading Settings File: " + this.settingsFile + " Using Defaults", Color.Red);
+          this.settings = new TestAppSettings();
+        }
+      }
+      else
+      {
+        this.settings = new TestAppSettings();
+        this.PushLog("No Settings File Found...Using Defaults", Color.Yellow);
+      }
+
+      this.lastIDIndex = 0;
+      this.sentHistory = new List<EDXLDE>((int)this.settings.HistoryLength);
+      this.receivedHistory = new List<NameObject<string, EDXLDE>>((int)this.settings.HistoryLength);
+
+      this.MResetMessageSettings(this.settings);
+
+      this.myde = new EDXLDE();
+      this.dropped = this.numIn = this.numOut = this.next = this.play = 0;
+      this.mTextDropped.Text = this.mTextIn.Text = this.mTextOut.Text = this.mTextNext.Text = this.mTextPlay.Text = this.dropped.ToString();
+    }
+
+    #endregion
+
+    #region Delegates
+    /// <summary>
+    /// Status callback method
+    /// </summary>
+    /// <param name="item">String message returned from function</param>
+    /// <param name="Background">color of window form background</param>
+    private delegate void RecieveTextCallback(string item, Color Background); // Thread Safe Callback
+    #endregion
+
+    #region Public Accessors
+
+    /// <summary>
+    /// Gets the Sent Message History list
+    /// </summary>
+    public List<EDXLDE> SentMessageHistory
+    {
+      get { return this.sentHistory; }
+    }
+
+    /// <summary>
+    /// Gets the Received Message History list
+    /// </summary>
+    public List<NameObject<string, EDXLDE>> ReceivedMessageHistory
+    {
+      get { return this.receivedHistory; }
+    }
+    #endregion
+
+    /// <summary>
+    /// OnClosed event handler
+    /// </summary>
+    /// <param name="e">event generated by the object</param>
+    protected override void OnClosed(EventArgs e)
+    {
+        this.messageManager.Close();
+        base.OnClosed(e);
+    }
+
+    #region Private Member Functions
+
+    #region MenuItems
+
+    /// <summary>
+    /// Routing options option from tool strip.
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void RoutingPaneToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      if (routingPaneToolStripMenuItem.Checked)
+      {
+        routingPaneToolStripMenuItem.Checked = false;
+        mGroupRouting.Visible = false;
+      }
+      else
+      {
+        mGroupRouting.Visible = true;
+        routingPaneToolStripMenuItem.Checked = true;
+      }
+    }
+
+    /// <summary>
+    /// Exit application tool strip option
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      this.Close();
+    }
+
+    /// <summary>
+    /// About option for tool strip
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void AboutEDXLDebugToolToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      EDXLAboutBox box = new EDXLAboutBox();
+      box.ShowDialog();
+    }
+
+    /// <summary>
+    /// Save settings tool strip option
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void SettingsToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      this.settings.Save(this.settingsFile);
+     this.PushLog("Settings File: " + this.settingsFile + " saved.", Color.Yellow);
+    }
+
+    /// <summary>
+    /// Edit Settings from the tool strip
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void SettingsToolStripMenuItem1_Click(object sender, EventArgs e)
+    {
+      SettingsForm child = new SettingsForm(this.settings, this.settingsFile);
+      child.SettingsCallBack = new SettingsForm.OnSettingsChange(this.OnSettingsChange);
+      child.Show();
+    }
+
+    #endregion
+
+    #region Common & Router Field Buttons
+
+    /// <summary>
+    /// Add Explicit Address event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtExplicitAddressAdd_Click(object sender, EventArgs e)
+    {
+      this.MClearExplicitAddressPanel();
+      this.MShowExplicitAddressPanel();
+    }
+
+    /// <summary>
+    /// Edit Explicit Address event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtExplicitAddressEdit_Click(object sender, EventArgs e)
+    {
+      if (mListExplicitAddress.SelectedItem != null)
+      {
+        ValueScheme mVL = (ValueScheme)mListExplicitAddress.SelectedItem;
+        string str = mVL.ExplicitAddressScheme;
+        if (mComboBoxExplicitAddressScheme.Items.Contains(str))
+        {
+          mComboBoxExplicitAddressScheme.Text = null;
+          mComboBoxExplicitAddressScheme.SelectedItem = str;
+        }
+        else
+        {
+          mComboBoxExplicitAddressScheme.SelectedIndex = -1;
+          mComboBoxExplicitAddressScheme.Text = str;
+        }
+
+        foreach (object obj in mVL.ExplicitAddressValue)
+        {
+          mListBoxExplicitAddressValues.Items.Add(obj);
+        }
+
+        this.MShowExplicitAddressPanel();
+        mListExplicitAddress.Items.Remove(mListExplicitAddress.SelectedItem);
+      }
+      else
+      {
+       this.PushLog("Edit Explicit Address: No address selected.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Delete Explicit Address event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtExplicitAddressDelete_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListExplicitAddress);
+    }
+
+    /// <summary>
+    /// Add Target Area event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtTargetAreaAdd_Click(object sender, EventArgs e)
+    {
+      this.PushLog("Adding Target Area:", Color.Blue);
+
+      // clear TargetAreaPanel
+      this.MTargetAreaPanelClear();
+
+      // set defaults
+      mListShapeSelect.SelectedIndex = 0;
+
+      mGroupTarget.Show();
+      mGroupTarget.Visible = true;
+      mGroupTarget.BringToFront();
+    }
+
+    /// <summary>
+    /// Edit Target Area event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtTargetAreaEdit_Click(object sender, EventArgs e)
+    {
+      // get selected item
+      int selectedTargetArea = mListTargetArea.SelectedIndex;
+      if (selectedTargetArea < 0)
+      {
+        this.PushLog("Attempted to EDIT Target Area, but no Target Area was selected", Color.Red);
+      }
+      else
+      {
+        // clear TargetAreaPanel
+        this.MTargetAreaPanelClear();
+
+        TargetAreaType targetAreaType = (TargetAreaType)mListTargetArea.SelectedItem;
+
+        // Populate TargetArea Panel
+        if (targetAreaType.Circle != null && targetAreaType.Circle.Count > 0)
+        {
+          this.PushLog("Target Area Edit: Populating Target Area Panel with circles", Color.Green);
+          foreach (string str in targetAreaType.Circle)
+          {
+            mListBoxShapes.Items.Add("circle, " + str);
+          }
+        }
+
+        if (targetAreaType.Polygon != null && targetAreaType.Polygon.Count > 0)
+        {
+          this.PushLog("Target Area Edit: Populating Target Area Panel with polygons", Color.Green);
+          foreach (string str in targetAreaType.Polygon)
+          {
+            mListBoxShapes.Items.Add("polygon, " + str);
+          }
+        }
+
+        if (targetAreaType.Country != null && targetAreaType.Country.Count > 0)
+        {
+          this.PushLog("Target Area Edit: Populating Target Area Panel with countries", Color.Green);
+          foreach (string str in targetAreaType.Country)
+          {
+            mListBoxCountryCodes.Items.Add(str);
+          }
+        }
+
+        if (targetAreaType.SubDivision != null && targetAreaType.SubDivision.Count > 0)
+        {
+          this.PushLog("Target Area Edit: Populating Target Area Panel with subdivisions", Color.Green);
+          foreach (string str in targetAreaType.SubDivision)
+          {
+            mListBoxSubdivisions.Items.Add(str);
+          }
+        }
+
+        if (targetAreaType.LocCodeUN != null && targetAreaType.LocCodeUN.Count > 0)
+        {
+          this.PushLog("Target Area Edit: Populating Target Area Panel with LocCodeUNs", Color.Green);
+          foreach (string str in targetAreaType.LocCodeUN)
+          {
+            mListBoxLocCodeUNs.Items.Add(str);
+          }
+        }
+
+        this.PushLog("Target Area Edit: Show Panel", Color.Green);
+
+        // show panel
+        mGroupTarget.Visible = true;
+        mGroupTarget.Show();
+        mGroupTarget.BringToFront();
+
+        // delete selected TargetArea, user must click done to re-add the edited target area.
+        mListTargetArea.Items.RemoveAt(mListTargetArea.SelectedIndex);
+      }
+    }
+
+    /// <summary>
+    /// Delete Target Area event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtTargetAreaDelete_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListTargetArea);
+    }
+
+    /// <summary>
+    /// Add Content Object event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtContentObjectAdd_Click(object sender, EventArgs e)
+    {
+      this.MShowContentObjectPanel();
+    }
+
+    /// <summary>
+    /// Edit Content Object event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtContentObjectEdit_Click(object sender, EventArgs e)
+    {
+      // parse ListBox object and populate content object Panel
+      if (mListContentObject.SelectedIndex < 0)
+      {
+        ContentObject contentObject = (ContentObject)mListContentObject.SelectedItem;
+
+        // Set the confidentiallity
+        string str = contentObject.Confidentiality;
+        if (mComboBoxConfidentiality.Items.Contains(str))
+        {
+          mComboBoxConfidentiality.SelectedItem = str;
+        }
+        else
+        {
+          mComboBoxConfidentiality.Text = str;
+        }
+
+        // Populate the Consumer Roles
+        foreach (object obje in contentObject.ConsumerRole)
+        {
+          mListBoxConsumerRoles.Items.Add(obje);
+        }
+
+        // set Content Description
+        mTextBoxContentDescription.Text = contentObject.ContentDescription;
+
+        // Populate the Keyword Values
+        foreach (object obje in contentObject.ContentKeyword)
+        {
+          mListboxKeywordValues.Items.Add(obje);
+        }
+
+        // set Incident Desription
+        mTextboxIncidentDescription.Text = contentObject.IncidentDescription;
+
+        // set Incident ID
+        mTextBoxIncidentID.Text = contentObject.IncidentID;
+
+        // Populate Originator Role
+        foreach (object obje in contentObject.OriginatorRole)
+        {
+          mListBoxOriginatorRoles.Items.Add(obje);
+        }
+
+        // Populate Other content
+        foreach (object obje in contentObject.Other)
+        {
+          mListBoxOthers.Items.Add(obje);
+        }
+
+        // Populate payload sub windows
+        // Spec says payload can only be one or the other, but not both.
+        // If XMLContent is present ignore nonXML content
+        bool xmlcontentPresent = true;
+        if (contentObject.XMLContent != null)
+        {
+          foreach (object obje in contentObject.XMLContent.EmbeddedXMLContent)
+          {
+            mListContentObject.Items.Add(obje);
+          }
+
+          foreach (object obje in contentObject.XMLContent.KeyXMLContent)
+          {
+            mListBoxKeyXMLContent.Items.Add(obje);
+          }
+        }
+        else if (contentObject.NonXMLContent != null)
+        {
+          mTextBoxNonXMLContentMIMEType.Text = contentObject.NonXMLContent.MIMEType;
+          mTextBoxNonXMLContentSize.Text = contentObject.NonXMLContent.Size.ToString();
+          mTextBoxNonXMLContentURI.Text = contentObject.NonXMLContent.URI.ToString();
+          mTextBoxNonXMLContentDigest.Text = contentObject.NonXMLContent.Digest;
+          mTextBoxNonXMLContentContent.Text = contentObject.NonXMLContent.ContentData;
+          xmlcontentPresent = false;
+        } 
+        else 
+        {
+          this.PushLog("Edit Content Object: No content in Content Object.", Color.Red);
+        }
+
+        // remove ContentObject being edited from the list of Content objects
+        mListContentObject.Items.Remove(mListContentObject.SelectedItem);
+        
+        this.MShowContentObjectPanel();
+        if (xmlcontentPresent)
+        {
+          this.MShowContentObjectXMLContentPanel();
+        }
+        else
+        {
+          this.MShowContentObjectNonXMLContentPanel();
+        }
+      }
+      else
+      {
+        this.PushLog("MainForm: Edit Content Object: No Content Object selected for editting.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Show Content Object Panel
+    /// </summary>
+    private void MShowContentObjectPanel()
+    {
+      // hide content panels inside contentobject panel
+      this.MHideXMLPanel();
+      this.MHideNonXMLPanel();
+
+      mPanelAddEditContent.Visible = true;
+      mPanelAddEditContent.Show();
+      mPanelAddEditContent.BringToFront();
+    }
+
+    /// <summary>
+    /// Show Content Object XML Content Panel
+    /// </summary>
+    private void MShowContentObjectXMLContentPanel()
+    {
+      if (mPanelAddEditContent.Visible)
+      {
+        mPanelXMLContent.Visible = true;
+        mPanelXMLContent.Show();
+        mPanelNonXMLContent.Visible = false;
+        mPanelNonXMLContent.Hide();
+      }
+    }
+
+    /// <summary>
+    /// Show Content Object NonXML content Panel
+    /// </summary>
+    private void MShowContentObjectNonXMLContentPanel()
+    {
+      if (mPanelAddEditContent.Visible)
+      {
+        mPanelNonXMLContent.Visible = true;
+        mPanelNonXMLContent.Show();
+        mPanelXMLContent.Visible = false;
+        mPanelXMLContent.Hide();
+      }
+    }
+
+    /// <summary>
+    /// Delete Content Object event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtContentObjectDelete_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListContentObject);
+    }
+
+    /// <summary>
+    /// Add Sender Role event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtSenderRoleAdd_Click(object sender, EventArgs e)
+    {
+      MFormValueList fvl = new MFormValueList();
+      fvl.ShowDialog();
+      ValueList mVL = fvl.mValueList;
+      if (mVL != null)
+      {
+        mListSenderRole.Items.Add(mVL);
+      }
+    }
+
+    /// <summary>
+    /// Edit Sender Role Event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtSenderRoleEdit_Click(object sender, EventArgs e)
+    {
+      if (mListSenderRole.SelectedIndex >= 0)
+      {
+        MFormValueList fvl = new MFormValueList();
+        fvl.LoadValueList((ValueList)mListSenderRole.SelectedItem);
+        fvl.ShowDialog();
+        ValueList mVL = fvl.mValueList;
+        if (mVL != null)
+        {
+          mListSenderRole.Items[mListSenderRole.SelectedIndex] = mVL;
+        } 
+      }
+      else
+      {
+        this.PushLog("No Sender Role selected, using add sender role instead", Color.Yellow);
+        this.MButtSenderRoleAdd_Click(sender, e);
+      }
+    }
+
+    /// <summary>
+    /// Delete sender role event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtSenderRoleDelete_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListSenderRole);
+    }
+
+    /// <summary>
+    /// Add recipient role event handler.
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtRecipientRoleAdd_Click(object sender, EventArgs e)
+    {
+      MFormValueList fvl = new MFormValueList();
+      fvl.ShowDialog();
+      ValueList mVL = fvl.mValueList;
+      if (mVL != null)
+      {
+        mListRecipientRole.Items.Add(mVL);
+      }
+    }
+
+    /// <summary>
+    /// Edit recipient role event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtRecipientRoleEdit_Click(object sender, EventArgs e)
+    {
+      if (mListRecipientRole.SelectedIndex >= 0)
+      {
+        MFormValueList fvl = new MFormValueList();
+        fvl.LoadValueList((ValueList)mListRecipientRole.SelectedItem);
+        fvl.ShowDialog();
+        ValueList mVL = fvl.mValueList;
+        if (mVL != null)
+        {
+          mListRecipientRole.Items[mListRecipientRole.SelectedIndex] = mVL;
+        }
+      }
+      else
+      {
+        this.PushLog("No Sender Role selected, using add sender role instead", Color.Yellow);
+        this.MButtRecipientRoleAdd_Click(sender, e);
+      }
+    }
+
+    /// <summary>
+    /// Delete recipient role event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtRecipientRoleDelete_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListRecipientRole);
+    }
+
+    /// <summary>
+    /// Add Keyword event handler.
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtKeywordAdd_Click(object sender, EventArgs e)
+    {
+      MFormValueList fvl = new MFormValueList();
+      fvl.ShowDialog();
+      ValueList mVL = fvl.mValueList;
+      if (mVL != null)
+      {
+        mListKeyword.Items.Add(mVL);
+      }
+    }
+
+    /// <summary>
+    /// Edit keyword event handler.
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtKeywordEdit_Click(object sender, EventArgs e)
+    {
+      if (mListKeyword.SelectedIndex >= 0)
+      {
+        MFormValueList fvl = new MFormValueList();
+        fvl.LoadValueList((ValueList)mListKeyword.SelectedItem);
+        fvl.ShowDialog();
+        ValueList mVL = fvl.mValueList;
+        if (mVL != null)
+        {
+          mListKeyword.Items[mListKeyword.SelectedIndex] = mVL;
+        }
+      }
+      else
+      {
+        this.PushLog("No Sender Role selected, using add sender role instead", Color.Yellow);
+        this.MButtKeywordAdd_Click(sender, e);
+      }
+    }
+
+    /// <summary>
+    /// Delete Keyword event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtKeywordDelete_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListKeyword);
+    }
+    #endregion
+
+    #region Message Buttons
+
+    /// <summary>
+    /// Generate button event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtGenerate_Click(object sender, EventArgs e)
+    {
+      if (!this.mCheckDistributionID.Checked)
+      {
+        this.lastIDIndex++;
+        this.mTextDistributionID.Text = this.settings.DistributionPrefix + this.lastIDIndex.ToString("d4");
+      }
+
+      if (!this.mCheckSenderID.Checked)
+      {
+        this.mTextSenderID.Text = this.settings.SenderDefault;
+      }
+
+      if (!this.mCheckDateTimeSent.Checked)
+      {
+        this.mTextDateTimeSent.Text = DateTime.Now.ToString("o");
+      }
+
+      if (!this.mCheckDistributionStatus.Checked)
+      {
+        this.mComboDistributionStatus.Text = this.settings.DistStatusDefault.ToString();
+      }
+
+      if (!this.mCheckDistributionType.Checked)
+      {
+        this.mComboDistributionType.Text = this.settings.DistTypeDefault.ToString();
+      }
+
+      if (!this.mCheckCombinedConfidentiality.Checked)
+      {
+        this.mTextCombinedConfidentiality.Text = this.settings.ConfDefault;
+      }
+
+      if (!this.mCheckLanguage.Checked)
+      {
+        this.mTextLanguage.Text = this.settings.LanguageDefault;
+      }
+    }
+
+    /// <summary>
+    /// Send Button event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtSend_Click(object sender, EventArgs e)
+    {
+      EDXLDE temp = this.GetDEFromValues();
+      if (temp != null)
+      {
+        this.messageManager.Send(temp);
+        this.sentHistory.Add(temp);
+        this.numOut++;
+        this.mTextOut.Text = this.numOut.ToString();
+        string packetInfo = string.Empty;
+        if (this.settings.TCPDestHost != null)
+        {
+          packetInfo += "  TCP: " + this.settings.TCPDestHost + ":" + this.settings.TCPDestPort + ":";
+        }
+        
+        if (this.settings.UDPDestHost != null)
+        {
+          packetInfo += "  UDP:" + this.settings.UDPDestHost + ":" + this.settings.UDPDestPort + ":";
+        }
+
+        this.PushLog("Sending message with ID: " + temp.DistributionID + " sent to: " + packetInfo, Color.Lime);
+      }
+      else
+      {
+        this.PushLog("No Message sent. Errors were reported in the DE Message", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// SeeXML button event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtSeeXML_Click(object sender, EventArgs e)
+    {
+      EDXLDE temp = this.GetDEFromValues();
+      if (temp != null)
+      {
+        MessageBox.Show(temp.WriteToXML());
+      }
+      else
+      {
+        this.PushLog("DE Message was not valid. Could not create XML object", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Validate button event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtValidate_Click(object sender, EventArgs e)
+    {
+      EDXLDE temp = this.GetDEFromValues();
+      if (temp != null)
+      {
+        this.PushLog("DE Message was valid.", Color.Lime);
+      }
+      else
+      {
+        this.PushLog("DE Message was not valid. Could not create XML object", Color.Red);
+      } 
+    }
+
+    /// <summary>
+    /// Checks for require values and correct format of EDXLDE
+    /// </summary>
+    /// <returns>
+    /// Null if now errors
+    /// </returns>
+    private ArrayList MGetValidationReport()
+    {
+      ArrayList errorMessage = new ArrayList();
+      
+      // check Distributions status
+      if (mComboDistributionStatus.SelectedIndex < 0)
+      {
+        errorMessage.Add("Invalid selection for Distribution Status.");
+      }
+      
+      // check distribution type
+      if (mComboDistributionType.SelectedIndex < 0)
+      {
+        errorMessage.Add("Invalid selection for Distribution Type.");
+      }
+      
+      // validate date format here.
+      try
+      {
+        DateTime.Parse(mTextDateTimeSent.Text);
+      }
+      catch (Exception e)
+      {
+        errorMessage.Add("Invalid DateTime given for DateTimeSent");
+        errorMessage.Add("Exception = " + e.Message);
+      }
+
+      if (errorMessage.Count < 1) 
+      {
+        return null;
+      } 
+      else 
+      {
+        return errorMessage;
+      }
+    }
+
+    #endregion
+
+    #region Burst Buttons
+
+    /// <summary>
+    /// Burst 1 button event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtBurst1_Click(object sender, EventArgs e)
+    {
+      // Check for valid content
+      EDXLDE temp = this.GetDEFromValues();
+      if (temp != null)
+      {
+        this.play = 1;
+        mTextPlay.Text = this.play.ToString();
+        this.mBurstTimer.Interval = 100;
+        this.deltaT = this.settings.Period;
+        mTextNext.Text = (((double)this.deltaT) / 1000).ToString();
+        this.mBurstTimer.Start();
+      }
+      else
+      {
+        this.PushLog("Cannot Burst 1, DE Message not valid.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Burst10 button event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtBurst10_Click(object sender, EventArgs e)
+    {
+      // Check for valid content
+      EDXLDE temp = this.GetDEFromValues();
+      if (temp != null)
+      {
+        this.play = 10;
+        mTextPlay.Text = this.play.ToString();
+        this.mBurstTimer.Interval = 100;
+        this.deltaT = this.settings.Period;
+        mTextNext.Text = (((double)this.deltaT) / 1000).ToString();
+        this.mBurstTimer.Start();
+      }
+      else
+      {
+        this.PushLog("Cannot Burst 10, DE Message not valid.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Burst 100 Button event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtBurst100_Click(object sender, EventArgs e)
+    {
+      // Check for valid content
+      EDXLDE temp = this.GetDEFromValues();
+      if (temp != null)
+      {
+        this.play = 100;
+        this.mTextPlay.Text = this.play.ToString();
+        this.mBurstTimer.Interval = 100;
+        this.deltaT = this.settings.Period;
+        this.mTextNext.Text = (((double)this.deltaT) / 1000).ToString();
+        this.mBurstTimer.Start();
+      }
+      else
+      {
+        this.PushLog("Cannot Burst 100, DE Message not valid.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Hose button click event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtHoseEm_Click(object sender, EventArgs e)
+    {
+      // Check for valid content
+      EDXLDE temp = this.GetDEFromValues();
+      if (temp != null)
+      {
+        this.play = -1;
+        this.mTextPlay.Text = "Inf";
+        this.mBurstTimer.Interval = 100;
+        this.deltaT = this.settings.Period;
+        this.mTextNext.Text = (((double)this.deltaT) / 1000).ToString();
+        this.mBurstTimer.Start();
+      }
+      else
+      {
+        this.PushLog("Cannot Hose'em, DE Message not valid.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Stop sending messages button event
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtStop_Click(object sender, EventArgs e)
+    {
+      this.play = 0;
+      this.mTextPlay.Text = this.play.ToString();
+      this.mBurstTimer.Stop();
+    }
+
+    #endregion
+
+    #region History & Log Buttons
+
+    /// <summary>
+    /// Clear stats event
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtClearStats_Click(object sender, EventArgs e)
+    {
+      this.dropped = this.numIn = this.numOut = this.next = this.play = 0;
+      this.mTextDropped.Text = mTextIn.Text = mTextOut.Text = mTextNext.Text = mTextPlay.Text = this.dropped.ToString();
+    }
+
+    /// <summary>
+    /// Clear the application log values
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtClearLog_Click(object sender, EventArgs e)
+    {
+      mListLog.Items.Clear();
+    }
+
+    #endregion
+
+    #region Main Form Functions
+
+    /// <summary>
+    /// Clean up connections on app close
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+      this.messageManager.Close();
+    }
+
+    #endregion
+
+    #endregion
+
+    #region Private Member Functions
+
+/// <summary>
+/// Changes Message Settings by stopping and restarting message queues with supplied settings.
+/// </summary>
+/// <param name="set">setting to set to</param>
+/// <returns>true or false for set success</returns>
+    private bool MResetMessageSettings(TestAppSettings set)
+    {
+      if (set == null)
+      {
+        return false;
+      }
+
+      this.settings = set;
+
+      // close current listners
+      if (this.messageManager != null)
+      {
+        this.messageManager.Close();
+      }
+
+      this.messageManager = new MessageManager(this.settings);
+      this.messageManager.MessageReceived = new MessageManager.RecieveMessageCallback(this.OnMessageReceived);
+
+      // restart listners and queues
+      this.messageManager.Start();
+      return true;
+    }
+
+    /// <summary>
+    /// Puts a string into the log with the specified background color...Time will be auto-prepended to the string
+    /// </summary>
+    /// <param name="item">String to Add</param>
+    /// <param name="background">Color for the Background</param>
+    private void PushLog(string item, Color background)
+    {
+      if (mListLog.InvokeRequired)
+      {
+        RecieveTextCallback d = new RecieveTextCallback(this.PushLog); // callback to here on this's thread
+        this.Invoke(d, new object[] { item, background }); // invoke the callback
+      }
+      else
+      {
+        ListViewItem myitem = new ListViewItem();
+        myitem.BackColor = background;
+        myitem.Text = DateTime.Now.ToString("o") + "  " + item;
+        mListLog.Items.Add(myitem);
+        mListLog.EnsureVisible(mListLog.Items.Count - 1);
+        mListLog.AutoResizeColumns(ColumnHeaderAutoResizeStyle.ColumnContent);
+      }
+    }
+
+    /// <summary>
+    /// Returns a new DE Object With Values Filled In
+    /// </summary>
+    /// <returns>New DE Object or null if content is not valid</returns>
+    /// <!--TODO Error Checking-->
+    private EDXLDE GetDEFromValues()
+    {
+      ArrayList errorMessage = new ArrayList();
+
+      EDXLDE demsg = new EDXLDE();
+
+      // any string is valid to set
+      demsg.DistributionID = mTextDistributionID.Text;
+
+      try
+      {
+        demsg.SenderID = mTextSenderID.Text;
+      }
+      catch (ArgumentNullException e)
+      {
+        e.ToString();
+        errorMessage.Add("SenderID cannot be null");
+      }
+      catch (FormatException e)
+      {
+        errorMessage.Add("SenderID Error - " + e.Message);
+      }
+
+      // DateTime format must be valid
+      try
+      {
+        demsg.DateTimeSent = DateTime.Parse(mTextDateTimeSent.Text);
+      }
+      catch (ArgumentException e)
+      {
+        errorMessage.Add(e.Message);
+      }
+
+      // must match an enum value
+      try
+      {
+        demsg.DistributionStatus = (StatusValue)Enum.Parse(typeof(StatusValue), mComboDistributionStatus.Text);
+      }
+      catch (ArgumentNullException e)
+      {
+        e.ToString();
+        errorMessage.Add("Distribution Status cannot be null");
+      }
+      catch (ArgumentException e)
+      {
+        e.ToString();
+        errorMessage.Add("Distribution Status Error - " + e.Message);
+      }
+
+      // must match an enum value
+      try
+      {
+        demsg.DistributionType = (TypeValue)Enum.Parse(typeof(TypeValue), mComboDistributionType.Text);
+      }
+      catch (ArgumentNullException e)
+      {
+        e.ToString();
+        errorMessage.Add("Distribution Type cannot be null");
+      }
+      catch (ArgumentException e)
+      {
+        errorMessage.Add("Distribution Type Error - " + e.Message);
+      }
+
+      // any string is valid to set
+      demsg.CombinedConfidentiality = mTextCombinedConfidentiality.Text;
+
+      try
+      {
+        demsg.Language = mTextLanguage.Text;
+      }
+      catch (ArgumentNullException e)
+      {
+        e.ToString();
+        errorMessage.Add("Language cannot be null");
+      }
+      catch (ArgumentException e)
+      {
+        e.ToString();
+        errorMessage.Add("Language Error - " + e.Message);
+      }
+
+      // any ValueScheme object is valid
+      foreach (object obj in mListExplicitAddress.Items)
+      {
+        demsg.ExplicitAddress.Add((ValueScheme)obj);
+      }
+
+      // any TargetAreaType is valid
+      foreach (object obj in mListTargetArea.Items)
+      {
+        demsg.TargetArea.Add((TargetAreaType)obj);
+      }
+   
+      // any object is valid to add
+      foreach (object obj in mListContentObject.Items)
+      {
+        demsg.ContentObjects.Add((ContentObject)obj);
+      }
+ 
+      // Optional Routing Roles
+      // any ValueList is valid     
+      foreach (object obj in mListSenderRole.Items)
+      {
+        demsg.SenderRole.Add((ValueList)obj);
+      }
+
+      // any ValueList is valid
+      foreach (object obj in mListRecipientRole.Items)
+      {
+        demsg.RecipientRole.Add((ValueList)obj);
+      }
+
+      // any ValueList is valid
+      foreach (object obj in mListKeyword.Items)
+      {
+        demsg.Keyword.Add((ValueList)obj);
+      }
+
+      // any string is valid to add
+      foreach (object obj in mListDistRef.Items)
+      {
+        demsg.DistributionReference.Add((string)obj);
+      }
+      
+      try
+      {
+        // Throws an error containing error string list
+        demsg.WriteToXML();
+        return demsg;
+      } 
+      catch (ArgumentNullException e) 
+      {
+        errorMessage.Add(string.Empty);
+        errorMessage.Add("Null value prevented DE object from being written to XML: ");
+        errorMessage.Add(e.Message);
+        errorMessage.Add(string.Empty);
+      } 
+      catch (ArgumentException e) 
+      {
+        if (errorMessage == null)
+        {
+          errorMessage = new ArrayList();
+        }
+
+        errorMessage.Add(string.Empty);
+        errorMessage.Add("--------------------------------------------------");
+        errorMessage.Add("Could not write DE object to XML. First detected errors:");
+        errorMessage.Add(e.Message);
+        errorMessage.Add(string.Empty);
+        this.MShowErrorReportWindow(errorMessage);
+      }
+
+      // if errors were detected show error window and return a null object
+      this.MShowErrorReportWindow(errorMessage);
+      demsg = null;
+      return null;
+    }
+
+    /// <summary>
+    /// Event timer for sending messages. Only sends if message is waiting in queue
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MBurstTimer_Tick(object sender, EventArgs e)
+    {
+      this.deltaT -= this.mBurstTimer.Interval;
+      this.mTextNext.Text = (((double)this.deltaT) / 1000).ToString();
+      if (this.deltaT == 0)
+      {
+        this.MButtGenerate_Click(this, e);
+        this.MButtSend_Click(this, e);
+
+        if (this.play == 1)
+        {
+          this.play--;
+          this.mTextPlay.Text = this.play.ToString();
+          this.mBurstTimer.Stop();
+        }
+        else if (this.play > 0)
+        {
+          this.play--;
+          this.mTextPlay.Text = this.play.ToString();
+          this.deltaT = this.settings.Period;
+          this.mTextNext.Text = (((double)this.deltaT) / 1000).ToString();
+        }
+        else
+        {
+          this.deltaT = this.settings.Period;
+          this.mTextNext.Text = (((double)this.deltaT) / 1000).ToString();
+        }
+      }
+    }
+
+    /// <summary>
+    /// Received message event handler
+    /// </summary>
+    private void OnMessageReceived()
+    {
+      NameObject<string, EDXLDE> temp = this.messageManager.RecieveQueue.DeQueue();
+      EDXLDE mt2 = (EDXLDE)temp.Value;
+      this.receivedHistory.Add(temp);      
+      this.PushLog("Got Message from Network: " + mt2.DistributionID + ", on " + temp.Name, Color.Lime);
+    }
+
+    /// <summary>
+    /// Reset the application settings
+    /// </summary>
+    /// <param name="settings">Setting to set the application to</param>
+    private void OnSettingsChange(TestAppSettings settings)
+    {
+      this.MResetMessageSettings(settings);
+    }
+    #endregion
+
+    #region TargetArea
+    /// <summary>
+    /// ListShapeSelect SelectedIndexChanged event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MListShapeSelect_SelectedIndexChanged_1(object sender, EventArgs e)
+    {
+      string selectedValue = (string)mListShapeSelect.SelectedItem.ToString();
+      if (selectedValue == null) 
+      { 
+        selectedValue = string.Empty; 
+      }
+
+      if (selectedValue.Equals("circle"))
+      {
+        mPolygonBox.Visible = false;
+        mPolygonBox.Hide();
+        mCircleBox.Show();
+        mCircleBox.Visible = true;
+      }
+      else if (selectedValue.Equals("polygon"))
+      {
+        mCircleBox.Visible = false;
+        mPolygonBox.Visible = true;
+      }
+      else
+      {
+        // if now shape is selected, don't give shape input boxes
+        mCircleBox.Visible = false;
+        mPolygonBox.Visible = false;
+      }
+    }
+
+    /// <summary>
+    /// Shapes Done button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonShapeDone_Click(object sender, EventArgs e)
+    {
+      // commit shape values and close form
+      this.PushLog("Adding Target Area toEDXL:", Color.Blue);
+      bool targetAreaValid = true;
+      bool targetAreaHasContent = false;
+      TargetAreaType targetAreaType = new TargetAreaType();
+
+      // add circles
+      string stringShape = null;
+      foreach (string str in mListBoxShapes.Items)
+      {
+        if (str.StartsWith("circle, "))
+        {
+          targetAreaHasContent = true;
+          stringShape = str.Substring("circle, ".Length);
+          if (targetAreaType.Circle == null)
+          {
+            targetAreaType.Circle = new List<string>();
+          }
+
+          targetAreaType.Circle.Add(stringShape);
+        }
+        else if (str.StartsWith("polygon, "))
+        {
+          targetAreaHasContent = true;
+          stringShape = str.Substring("polygon, ".Length);
+          if (targetAreaType.Polygon == null)
+          {
+            targetAreaType.Polygon = new List<string>();
+          }
+
+          targetAreaType.Polygon.Add(stringShape);
+        }
+      }
+
+      // add Country Codes to the TargetAreaType
+      if (mListBoxCountryCodes.Items.Count > 0)
+      {
+        List<string> list = new List<string>();
+        foreach (object obj in mListBoxCountryCodes.Items)
+        {
+          list.Add(obj.ToString());
+        }
+
+        targetAreaHasContent = true;
+        targetAreaType.Country = list;
+      }
+
+      // add subdivisions to the TargetAreaType
+      if (mListBoxSubdivisions.Items.Count > 0)
+      {
+        List<string> list = new List<string>();
+        foreach (object obj in mListBoxSubdivisions.Items)
+        {
+          list.Add(obj.ToString());
+        }
+
+        targetAreaHasContent = true;
+        targetAreaType.SubDivision = list;
+      }
+
+      // add UN/LOCODES to the TargetAreaType
+      if (mListBoxLocCodeUNs.Items.Count > 0)
+      {
+        List<string> list = new List<string>();
+        foreach (object obj in mListBoxLocCodeUNs.Items)
+        {
+          list.Add(obj.ToString());
+        }
+
+        targetAreaHasContent = true;
+        targetAreaType.LocCodeUN = list;
+      }
+
+      if (targetAreaValid && targetAreaHasContent)
+      {
+        mListTargetArea.Items.Add(targetAreaType);
+      }
+      else
+      {
+        this.PushLog("Add TargetArea failed: something was not valid", Color.Red);
+      }
+
+      // hide panel
+      mGroupTarget.Visible = false;
+      mGroupTarget.Hide();
+
+      // clear panel
+      this.MTargetAreaPanelClear();
+    }
+
+    #region TargetArea_circles
+    /// <summary>
+    /// Add Circle button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonCircleAdd_Click(object sender, EventArgs e)
+    {
+      if (mCircleLatitude.Text != null && mCircleLatitude.Text.Length > 0 &&
+              mCircleLongitude.Text != null && mCircleLongitude.Text.Length > 0 &&
+              mCircleRadius.Text != null && mCircleRadius.Text.Length > 0)
+      {
+        mListBoxShapes.Items.Add("circle, " + mCircleLatitude.Text + ", " + mCircleLongitude.Text + " " + mCircleRadius.Text);
+
+        // clear added values
+        mCircleLatitude.Text = null;
+        mCircleLongitude.Text = null;
+        mCircleRadius.Text = null;
+      }
+      else
+      {
+        this.PushLog("Adding TargetArea Add Circle: Attempted to add an Invalid Circle", Color.Red);
+      }
+    }
+
+    #endregion TargetArea_circles
+
+    #region TargetArea_polygons
+    /// <summary>
+    /// Add Polygon button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonPolygonAddPoint_Click(object sender, EventArgs e)
+    {
+      if (mPolygonLatitude.Text.Length > 0 && mPolygonLongitude.Text.Length > 0)
+      {
+        mListBoxPolygonPoints.Items.Add(mPolygonLatitude.Text + ", " + mPolygonLongitude.Text);
+
+        // clear added values
+        mPolygonLatitude.Text = null;
+        mPolygonLongitude.Text = null;
+      }
+      else
+      {
+        this.PushLog("Adding TargetArea Add Points: Point values not entered.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Remove Point button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemovePoint_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxPolygonPoints);
+    }
+
+    /// <summary>
+    /// Add Polygon button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonPolygonAdd_Click(object sender, EventArgs e)
+    {
+      if (mListBoxPolygonPoints.Items.Count > 0)
+      {
+        string items = "polygon, ";
+        foreach (object item in mListBoxPolygonPoints.Items)
+        {
+          items += "," + item.ToString();
+        }
+
+        items += " " + mListBoxPolygonPoints.Items[0];
+        mListBoxShapes.Items.Add(items);
+      }
+      else
+      {
+        this.PushLog("Adding TargetArea Add Polygon: Attempted to add an Invalid Polygon", Color.Red);
+      }
+    }
+    #endregion TargetArea_polygons
+
+    /// <summary>
+    /// Remove Shapes button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveShapes_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxShapes);
+    }
+
+    /// <summary>
+    /// Add Country Code button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddCountryCode_Click(object sender, EventArgs e)
+    {
+      if (mComboCountryCode.SelectedIndex < 0) 
+      {
+        // user entered text
+        string userText = mComboCountryCode.Text;
+        if (userText != null && userText.Length > 0)
+        {
+          mListBoxCountryCodes.Items.Add(userText);
+        }
+        else
+        {
+          this.PushLog("Adding TargetArea Country Code: No Value selected", Color.Red);
+        }
+
+        mComboCountryCode.Text = null;
+      }
+      else 
+      {
+        // use selected text val
+        mListBoxCountryCodes.Items.Add(mComboCountryCode.SelectedItem.ToString());
+      }
+    }
+
+    /// <summary>
+    /// Add Subdivision button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddSubdivision_Click(object sender, EventArgs e)
+    {
+      if (mComboSubdivision.SelectedIndex < 0) 
+      {
+        // user entered text
+        string userText = mComboSubdivision.Text;
+        if (userText != null && userText.Length > 0)
+        {
+          mListBoxSubdivisions.Items.Add(userText);
+        }
+        else
+        {
+          this.PushLog("Adding TargetArea Subdivision: No Value selected", Color.Red);
+        }
+
+        mComboSubdivision.Text = null;
+      }
+      else 
+      {
+        // use selected text val
+        mListBoxSubdivisions.Items.Add(mComboSubdivision.SelectedItem.ToString());
+      }
+    }
+
+    /// <summary>
+    /// Add LocationCodeUN button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddLocCodeUN_Click(object sender, EventArgs e)
+    {
+      if (mComboLocCodeUN.SelectedIndex < 0) 
+      {
+        // user entered text
+        string userText = mComboLocCodeUN.Text;
+        if (userText != null && userText.Length > 0)
+        {
+          mListBoxLocCodeUNs.Items.Add(userText);
+        }
+        else
+        {
+          this.PushLog("Adding TargetArea UN/LOCODE Code: No Value selected", Color.Red);
+        }
+
+        mComboLocCodeUN.Text = null;
+      }
+      else 
+      {
+        // use selected text val
+        mListBoxLocCodeUNs.Items.Add(mComboLocCodeUN.SelectedItem.ToString());
+      }
+    }
+
+    /// <summary>
+    /// Remove Country Codes button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveCountryCodes_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxCountryCodes);
+    }
+
+    /// <summary>
+    /// SubDivisions button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonSubDivisions_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxSubdivisions);
+    }
+
+    /// <summary>
+    /// Remove LocationCode UN button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveLocCodeUNs_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxLocCodeUNs);
+    }
+
+    /// <summary>
+    /// Clears all values from the TargetArea Add/Edit Panel input objects
+    /// </summary>
+    private void MTargetAreaPanelClear()
+    {
+      this.mListBoxShapes.Items.Clear();
+      this.mCircleLatitude.Text = null;
+      this.mCircleLongitude.Text = null;
+      this.mCircleRadius.Text = null;
+      this.mPolygonLatitude.Text = null;
+      this.mPolygonLongitude.Text = null;
+      this.mListBoxPolygonPoints.Items.Clear();
+      this.mListBoxCountryCodes.Items.Clear();
+      this.mListBoxLocCodeUNs.Items.Clear();
+      this.mListBoxSubdivisions.Items.Clear();
+      this.mComboCountryCode.Text = null;
+      this.mComboCountryCode.SelectedIndex = -1;
+      this.mComboLocCodeUN.Text = null;
+      this.mComboLocCodeUN.SelectedIndex = -1;
+      this.mComboSubdivision.Text = null;
+      this.mComboSubdivision.SelectedIndex = -1;
+    }
+
+    /// <summary>
+    /// Clears all valued from the Content Object Add/Edit Panel input objects
+    /// </summary>
+    private void MObjectAreaPanelClear()
+    {
+      this.mTextBoxContentDescription.Text = null;
+      this.mComboBoxConfidentiality.Text = null;
+      this.mComboBoxConfidentiality.SelectedIndex = -1;
+      this.mComboBoxKeywordURNValue.Text = null;
+      this.mComboBoxKeywordURNValue.SelectedIndex = -1;
+      this.mListboxKeywordValues.Items.Clear();
+      this.mTextBoxKeywordValue.Text = null;
+      this.mTextBoxIncidentID.Text = null;
+      this.mTextboxIncidentDescription.Text = null;
+      this.mTextBoxOther.Text = null;
+      this.mListBoxOthers.Items.Clear();
+      this.mComboBoxOriginatorURNValue.Text = null;
+      this.mComboBoxOriginatorURNValue.SelectedIndex = -1;
+      this.mTextBoxOriginatorValue.Text = null;
+      this.mListBoxOriginatorURNValues.Items.Clear();
+      this.mListBoxOriginatorRoles.Items.Clear();
+      this.mComboBoxConsumerValue.Text = null;
+      this.mComboBoxConsumerValue.SelectedIndex = -1;
+      this.mTextBoxConsumerValue.Text = null;
+      this.mListBoxConsumerValues.Items.Clear();
+      this.mListBoxConsumerRoles.Items.Clear();
+
+      this.MHideNonXMLPanel();
+      this.MClearNonXMLContentPanel();
+      this.mTextBoxNonXMLContentContent.Text = null;
+      this.mTextBoxNonXMLContentDigest.Text = null;
+      this.mTextBoxNonXMLContentMIMEType.Text = null;
+      this.mTextBoxNonXMLContentSize.Text = null;
+      this.mTextBoxNonXMLContentURI.Text = null;
+      
+      // clear NonXMLContent fields too
+      this.MHideXMLPanel();
+      this.MClearXMLContentPanel();
+      this.mTextBoxKeyXMLContent.Text = null;
+      this.mTextBoxEmbeddedXMLContent.Text = null;
+      this.mListBoxKeyXMLContent.Items.Clear();
+      this.mListBoxEmbeddedXMLContent.Items.Clear();
+
+      // clear XMLContent fields too
+    }
+
+    /// <summary>
+    /// Cancel Target Area button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonTargetAreaCancel_Click(object sender, EventArgs e)
+    {
+      this.MTargetAreaPanelClear();
+      mGroupTarget.Visible = false;
+      mGroupTarget.Hide();
+    }
+
+    #endregion TargetArea
+
+    /// <summary>
+    /// Add Other button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtomAddOther_Click(object sender, EventArgs e)
+    {
+      if (mTextBoxOther.Text != null && mTextBoxOther.Text.Length > 0)
+      {
+        mListBoxOthers.Items.Add(mTextBoxOther.Text);
+      }
+    }
+
+    /// <summary>
+    /// Remove Other button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveOther_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxOthers);
+    }
+
+    /// <summary>
+    /// Add Keyword button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddKeyword_Click(object sender, EventArgs e)
+    {
+      if ((this.mComboBoxKeywordURNValue.SelectedIndex > -1) || ((this.mComboBoxKeywordURNValue.Text != null && this.mComboBoxKeywordURNValue.Text.Length > 0) &&
+          this.mListBoxKeywords.Items.Count > 0))
+      {
+        string str = string.Empty;
+        if (mComboBoxKeywordURNValue.SelectedIndex > -1) 
+        {
+          str = mComboBoxKeywordURNValue.SelectedValue.ToString();
+        } 
+        else
+        {
+          str = mComboBoxKeywordURNValue.Text;
+        }
+
+        str += "--";
+        
+        bool firstPass = true;
+        foreach (object obj in mListBoxKeywords.Items)
+        {
+          if (firstPass)
+          {
+            firstPass = false;
+          } 
+          else
+          {
+            str += ":";
+          }
+
+          str += obj.ToString();
+        }
+
+        mListboxKeywordValues.Items.Add(str);
+        mListBoxKeywords.Items.Clear();
+        mComboBoxKeywordURNValue.Text = null;
+        mComboBoxKeywordURNValue.SelectedIndex = -1;
+      }
+      else
+      {
+        this.PushLog("Add Content: Adding keyword(s) failed - no keyword or no URN specified", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Remove Keyword button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveKeyword_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListboxKeywordValues);
+    }
+
+    /// <summary>
+    /// Show the NonXMLContent panel inside the Add ContentObject panel
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddNonXMLContent_Click(object sender, EventArgs e)
+    {
+      // show non XML Content Panel
+      this.mPanelNonXMLContent.Show();
+      this.mPanelNonXMLContent.Visible = true;
+      this.mPanelNonXMLContent.BringToFront();
+      this.mPanelXMLContent.Hide();
+      this.mPanelXMLContent.Visible = false;
+    }
+
+    /// <summary>
+    /// Show the XMLContent panel inside the Add ContentObject panel
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddXMLContent_Click(object sender, EventArgs e)
+    {
+      // show XML Content Panel
+      this.mPanelXMLContent.Show();
+      this.mPanelXMLContent.Visible = true;
+      this.mPanelXMLContent.BringToFront();
+      this.mPanelNonXMLContent.Hide();
+      this.mPanelNonXMLContent.Visible = false;
+    }
+
+    /// <summary>
+    /// Clear all content in the NonXMLContent Panel
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonCancelNonXMLContent_Click(object sender, EventArgs e)
+    {
+      this.MClearNonXMLContentPanel();
+    }
+
+    /// <summary>
+    /// Hide the NonXMLContent panel inside the ContentObject panel
+    /// </summary>
+    private void MHideNonXMLPanel()
+    {
+      mPanelNonXMLContent.Hide();
+      mPanelNonXMLContent.Visible = false;
+    }
+
+    /// <summary>
+    /// Hide the XMLContent panel inside the ContentObject panel
+    /// </summary>
+    private void MHideXMLPanel()
+    {
+      this.mPanelXMLContent.Hide();
+      this.mPanelXMLContent.Visible = false;
+    }
+
+    /// <summary>
+    /// Show the NonXMLContent panel inside the ContentObject panel
+    /// </summary>
+    private void MShowNonXMLPanel()
+    {
+      this.mPanelNonXMLContent.Show();
+      this.mPanelNonXMLContent.Visible = true;
+    }
+
+    /// <summary>
+    /// Show the XMLContent panel inside the ContentObject panel
+    /// </summary>
+    private void MShowXMLPanel()
+    {
+      this.mPanelXMLContent.Show();
+      this.mPanelXMLContent.Visible = true;
+    }
+
+    /// <summary>
+    /// Clear all the content from the XMLContent panel inside the ContentObject panel
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonCancelXMLContent_Click(object sender, EventArgs e)
+    {
+      this.MClearXMLContentPanel();
+    }
+
+    /// <summary>
+    /// Clears the entire content Panel
+    /// </summary>
+    private void MClearContentPanel()
+    {
+      this.MClearNonXMLContentPanel();
+      this.MClearXMLContentPanel();
+
+      this.mTextBoxContentDescription.Text = null;
+      this.mTextBoxIncidentID.Text = null;
+      this.mTextboxIncidentDescription.Text = null;
+      this.mTextBoxOther.Text = null;
+
+      this.mComboBoxKeywordURNValue.Text = null;
+      this.mComboBoxKeywordURNValue.SelectedIndex = -1;
+      this.mTextBoxKeywordValue.Text = null;
+      this.mListBoxKeywords.Items.Clear();
+      this.mListboxKeywordValues.Items.Clear();
+
+      this.mComboBoxOriginatorURNValue.Text = null;
+      this.mComboBoxOriginatorURNValue.SelectedIndex = -1;
+      this.mTextBoxOriginatorValue.Text = null;
+      this.mListBoxOriginatorRoles.Items.Clear();
+      this.mListBoxOriginatorURNValues.Items.Clear();
+
+      this.mComboBoxConsumerValue.Text = null;
+      this.mComboBoxConsumerValue.SelectedIndex = -1;
+      this.mTextBoxConsumerValue.Text = null;
+      this.mListBoxConsumerValues.Items.Clear();
+      this.mListBoxConsumerRoles.Items.Clear();
+
+      this.mListBoxConsumerRoles.Items.Clear();
+      this.mListBoxConsumerValues.Items.Clear();
+      this.mListBoxOriginatorRoles.Items.Clear();
+    }
+
+    /// <summary>
+    /// Clears all the content from the XMLContent panel inside the ContentObject panel
+    /// </summary>
+    private void MClearXMLContentPanel()
+    {
+      this.PushLog("Add Content: Clearing XML Content Panel", Color.Green);
+      this.mTextBoxEmbeddedXMLContent.Text = null;
+      this.mTextBoxKeyXMLContent.Text = null;
+      this.mListBoxEmbeddedXMLContent.Items.Clear();
+      this.mListBoxKeyXMLContent.Items.Clear();
+    }
+
+    /// <summary>
+    /// Clears all the content from the nonXMLContent panel inside the ContentObject panel
+    /// </summary>
+    private void MClearNonXMLContentPanel()
+    {
+      this.PushLog("Add Content: Clearing non-XML Content Panel", Color.Green);
+      mTextBoxNonXMLContentMIMEType.Text = null;
+      mTextBoxNonXMLContentSize.Text = null;
+      mTextBoxNonXMLContentURI.Text = null;
+      mTextBoxNonXMLContentContent.Text = null;
+      mTextBoxNonXMLContentDigest.Text = null;
+    }
+
+    /// <summary>
+    /// Add Other button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddOther_Click(object sender, EventArgs e)
+    {
+      if (this.mTextBoxOther.Text != null && this.mTextBoxOther.Text.Length > 0)
+      {
+        this.mListBoxOthers.Items.Add(this.mTextBoxOther.Text);
+        this.mTextBoxOther.Text = null;
+      }
+      else
+      {
+        this.PushLog("Add Content Object: Failed to add Other - not other value provided", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Add URN Value button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddURNRoleValue_Click(object sender, EventArgs e)
+    {
+      if (mTextBoxOriginatorValue.Text != null && mTextBoxOriginatorValue.Text.Length > 0)
+      {
+        mListBoxOriginatorURNValues.Items.Add(mTextBoxOriginatorValue.Text);
+        mTextBoxOriginatorValue.Text = null;
+      }
+      else
+      {
+        this.PushLog("Add Content Object: Failed originator roll - no Text Value", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Remove URN Value button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveURNValues_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxOriginatorURNValues);
+    }
+
+    /// <summary>
+    /// Add Role button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddRole_Click(object sender, EventArgs e)
+    {
+      if (this.mListBoxOriginatorURNValues.Items.Count > 0)
+      {
+        string roleString = string.Empty;
+        bool firstPass = true;
+        if (this.mComboBoxOriginatorURNValue.SelectedIndex > -1)
+        {
+          roleString += this.mComboBoxOriginatorURNValue.SelectedValue;
+        }
+        else
+        {
+          roleString += this.mComboBoxOriginatorURNValue.Text;
+        }
+
+        roleString += "--";
+        foreach (object obje in this.mListBoxOriginatorURNValues.Items)
+        {
+          if (firstPass)
+          {
+            firstPass = false;
+          }
+          else
+          {
+            roleString += ":";
+          }
+
+          roleString += obje.ToString();
+        }
+
+        mListBoxOriginatorRoles.Items.Add(roleString);
+        mListBoxOriginatorURNValues.Items.Clear();
+        mComboBoxOriginatorURNValue.Text = null;
+        mComboBoxOriginatorURNValue.SelectedIndex = -1;
+      }
+      else
+      {
+        this.PushLog("Add Content Object: No originator role to add", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Remove Role button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveRole_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxOriginatorRoles);
+    }
+
+    /// <summary>
+    /// Add Consumer Value button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddConsumerValue_Click(object sender, EventArgs e)
+    {
+      bool added = false;
+      if (this.mComboBoxConsumerValue.Text != null && this.mComboBoxConsumerValue.Text.Length > 0)
+      {
+        mListBoxConsumerValues.Items.Add(mTextBoxConsumerValue.Text);
+        added = true;
+      }
+      else
+      {
+        this.PushLog("Add Content Object: Failed consumer role - no Text Value", Color.Red);
+      }
+
+      if (added)
+      {
+        this.mTextBoxConsumerValue.Text = null;
+      }
+    }
+
+    /// <summary>
+    /// Remove Consumer Value button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveConsumerValues_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxConsumerValues);
+    }
+
+    /// <summary>
+    /// Add Consumer Role button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddConsumerRole_Click(object sender, EventArgs e)
+    {
+      if (this.mListBoxConsumerValues.Items.Count > 0 && 
+        (this.mComboBoxConsumerValue.SelectedIndex > -1 || 
+          (this.mComboBoxConsumerValue.Text != null && this.mComboBoxConsumerValue.Text.Length > 0)))
+      {
+        string roleString = string.Empty;
+
+        // Consumer URN Value
+        if (mComboBoxConsumerValue.SelectedIndex > -1)
+        {
+          roleString = mComboBoxConsumerValue.SelectedValue.ToString();
+        }
+        else
+        {
+          roleString = mComboBoxConsumerValue.Text;
+        }
+
+        roleString += "--";
+
+        // Consumer values
+        bool firstPass = true;
+        foreach (object obje in mListBoxConsumerValues.Items)
+        {
+          if (firstPass)
+          {
+            firstPass = false;
+          }
+          else
+          {
+            roleString += ":";
+          }
+
+          roleString += obje.ToString();
+        }
+
+        this.mListBoxConsumerRoles.Items.Add(roleString);
+        this.mListBoxConsumerValues.Items.Clear();
+        this.mComboBoxConsumerValue.Text = null;
+        this.mComboBoxConsumerValue.SelectedIndex = -1;
+      }
+      else
+      {
+        this.PushLog("Add Content Object: No consumer role to add", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Remove Consumer Role button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveConsumerRole_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxConsumerRoles);
+    }
+
+    /// <summary>
+    /// Add Content button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddContentObject_Click(object sender, EventArgs e)
+    {
+      bool validContentObject = true;
+      ContentObject contentObject = new ContentObject();
+
+      // store confidentiallity
+      if (mComboBoxConfidentiality.SelectedIndex < 0)
+      {
+        if (mComboBoxConfidentiality.Text != null && mComboBoxConfidentiality.Text.Length > 0)
+        {
+          contentObject.Confidentiality = mComboBoxConfidentiality.Text;
+        }
+        else
+        {
+          this.PushLog("Adding Content Object: no value present for confidentiality", Color.Orange);
+        }
+      }
+      else
+      {
+        if (mComboBoxConfidentiality.SelectedValue != null)
+        {
+          contentObject.Confidentiality = mComboBoxConfidentiality.SelectedValue.ToString();
+        }
+        else
+        {
+          validContentObject = false;
+          this.PushLog("Adding Content Object: NULL value selected for confidentiality", Color.Red);
+        }
+      }
+
+      // store consumer role
+      if (mListBoxConsumerRoles.Items.Count > 0)
+      {
+        foreach (object obj in mListBoxConsumerRoles.Items) 
+        {
+          if (contentObject.ConsumerRole == null)
+          {
+            contentObject.ConsumerRole = new VLList("consumerRole");
+          }
+
+          contentObject.ConsumerRole.Add(this.MParseValueList((string)obj));
+        }
+      } 
+      else 
+      {
+        this.PushLog("Adding Content Object: no values present for consumer role(s)", Color.Orange);
+      }
+
+      // store content object description
+      if (mTextBoxContentDescription.Text != null && mTextBoxContentDescription.Text.Length > 0)
+      {
+        contentObject.ContentDescription = mTextBoxContentDescription.Text;
+      }
+      else
+      {
+        this.PushLog("Adding Content Object: No Content Description given", Color.Orange);
+      }
+
+      // parse and store keyword
+      if (mListboxKeywordValues.Items.Count > 0) 
+      {
+        foreach (object obj in mListboxKeywordValues.Items)
+        {
+          if (contentObject.ContentKeyword == null)
+          {
+            contentObject.ContentKeyword = new VLList();
+          }
+
+          contentObject.ContentKeyword.Add(this.MParseValueList((string)obj));
+        }
+      } 
+      else 
+      {
+        this.PushLog("Adding Content Object: No Keywords given", Color.Orange);
+      }
+
+      // store Incident Description
+      if (mTextboxIncidentDescription.Text != null && mTextboxIncidentDescription.Text.Length > 0)
+      {
+        contentObject.IncidentDescription = mTextboxIncidentDescription.Text;
+      }
+      else
+      {
+        this.PushLog("Adding Content Object: No Incident Description given", Color.Orange);
+      }
+
+      // Store Indcident ID
+      if (mTextBoxIncidentID.Text != null && mTextBoxIncidentID.Text.Length > 0)
+      {
+        contentObject.IncidentID = mTextBoxIncidentID.Text;
+      }
+      else
+      {
+        this.PushLog("Adding Content Object: No Incident Description given", Color.Orange);
+      }
+
+      // parse and store Originator Role
+      if (mListBoxOriginatorRoles.Items.Count > 0)
+      {
+        foreach (object obj in mListBoxOriginatorRoles.Items)
+        {
+          if (contentObject.OriginatorRole == null)
+          {
+            contentObject.OriginatorRole = new VLList();
+          }
+
+          contentObject.OriginatorRole.Add(this.MParseValueList((string)obj));
+        }
+      }
+      else
+      {
+        this.PushLog("Adding Content Object: No Originator Roles given.", Color.Orange);
+      }
+
+      // parse and store ContentObject content
+      if (this.mPanelXMLContent.Visible)
+      {
+        contentObject.XMLContent = new XMLContentType();
+        contentObject.NonXMLContent = null;
+        foreach (object obj in this.mListBoxKeyXMLContent.Items)
+        {
+          contentObject.XMLContent.KeyXMLContent.Add((XElement)obj);
+        }
+
+        foreach (object obj in this.mListBoxEmbeddedXMLContent.Items)
+        {
+          contentObject.XMLContent.EmbeddedXMLContent.Add((XElement)obj);
+        }
+
+        this.PushLog("Adding Content Object: processed xmlContent.", Color.Green);
+      }
+      else if (this.mPanelNonXMLContent.Visible)
+      {
+        contentObject.XMLContent = null;
+        contentObject.NonXMLContent = new NonXMLContentType();
+        if (this.mTextBoxNonXMLContentMIMEType.Text != null && this.mTextBoxNonXMLContentMIMEType.Text.Length > 0)
+        {
+          contentObject.NonXMLContent.MIMEType = mTextBoxNonXMLContentMIMEType.Text;
+          if (this.mTextBoxNonXMLContentSize.Text != null && this.mTextBoxNonXMLContentSize.Text.Length > 0)
+          {
+            contentObject.NonXMLContent.Size = Convert.ToInt32(this.mTextBoxNonXMLContentSize.Text); 
+          }
+
+          if (this.mTextBoxNonXMLContentDigest.Text != null && this.mTextBoxNonXMLContentDigest.Text.Length > 0)
+          {
+            contentObject.NonXMLContent.Digest = this.mTextBoxNonXMLContentDigest.Text;
+          }
+
+          if (this.mTextBoxNonXMLContentURI.Text != null && this.mTextBoxNonXMLContentURI.Text.Length > 0)
+          {
+            contentObject.NonXMLContent.URI = new Uri(this.mTextBoxNonXMLContentURI.Text);
+          }
+
+          if (this.mTextBoxNonXMLContentContent.Text != null && this.mTextBoxNonXMLContentContent.Text.Length > 0)
+          {
+            contentObject.NonXMLContent.ContentData = this.mTextBoxNonXMLContentContent.Text;
+          }
+
+          this.PushLog("Adding Content Object: processed nonXMLContent.", Color.Green);
+        }
+        else
+        {
+          validContentObject = false;
+          this.PushLog("Adding Content Object: Cannot add Content Object with no content.", Color.Red);
+        }
+      }
+      else
+      {
+        this.PushLog("Adding Content Object: No content in Content Object.", Color.Red);
+      }
+
+      if (validContentObject)
+      {
+        this.mListContentObject.Items.Add(contentObject);
+        this.MClearContentPanel();
+        this.mPanelAddEditContent.Visible = false;
+        this.mPanelAddEditContent.Hide();
+        this.PushLog("Adding Content Object: Content object successfully added", Color.Green);
+      }
+      else 
+      {
+        this.PushLog("Addding Content Object: Content object not valid, Please correct or 'cancel'", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Parse a formatted string into a Value list
+    /// </summary>
+    /// <param name="formattedString">URN - value1:value2:...:valueX</param>
+    /// <returns>ValueList object</returns>
+    private ValueList MParseValueList(string formattedString)
+    {
+      ValueList mVL = new ValueList();
+      string custstr;
+      string source = formattedString;
+
+      // get keyword URN
+      int endURN = source.IndexOf("--");
+      custstr = source.Substring(0, endURN);
+      mVL.ValueListURN = custstr;
+      
+      // parse and add values
+      if (mVL.Value == null)
+      {
+        mVL.Value = new List<string>();
+      }
+
+      custstr = source.Substring(endURN + 2);
+      string[] values = custstr.Split(':');
+      foreach (string str in values) 
+      {
+        mVL.Value.Add(str);
+      }
+
+      return mVL;
+    }
+
+    /// <summary>
+    /// Add keyword event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddKeyword_Click_1(object sender, EventArgs e)
+    {
+      if (this.mTextBoxKeywordValue.Text != null && this.mTextBoxKeywordValue.Text.Length > 0)
+      {
+        this.mListBoxKeywords.Items.Add(this.mTextBoxKeywordValue.Text);
+        this.mTextBoxKeywordValue.Text = null;
+      }
+      else
+      {
+        this.PushLog("Content Object Panel: add keyword, but no keyword given", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Remove Keyword event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveKeyword_Click_1(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxKeywords);
+    }
+
+    /// <summary>
+    /// Add Embedded XML Content event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddEmbeddedXMLContent_Click(object sender, EventArgs e)
+    {
+      if (this.mTextBoxEmbeddedXMLContent.Text != null && this.mTextBoxEmbeddedXMLContent.Text.Length > 0)
+      {
+        this.mListBoxEmbeddedXMLContent.Items.Add(this.mTextBoxEmbeddedXMLContent.Text);
+        this.mTextBoxEmbeddedXMLContent.Text = null;
+      }
+      else
+      {
+        this.PushLog("XML Content Panel: Attempted to add null Embedded XML Content.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Remove Embedded XML Content event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveEmbeddedXMLContent_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxEmbeddedXMLContent);
+    }
+
+    /// <summary>
+    /// Remove the selected values from a ListBox
+    /// </summary>
+    /// <param name="mLB">ListBox to remove selected values from</param>
+    private void MRemoveSelectedValuesFromListBox(ListBox mLB)
+    {
+      if (mLB != null && mLB.SelectedItems.Count > 0)
+      {
+        List<object> obj = new List<object>();
+        foreach (object obje in mLB.SelectedItems)
+        {
+          obj.Add(obje);
+        }
+
+        foreach (object obje in obj)
+        {
+          mLB.Items.Remove(obje);
+        }
+      }
+      else
+      {
+        this.PushLog("Removing ListBox items: but no items selectd", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Remove Key XML Content event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonRemoveKeyXMLContent_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListBoxKeyXMLContent);
+    }
+
+    /// <summary>
+    /// Add Key XML Content event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddKeyXMLContent_Click(object sender, EventArgs e)
+    {
+      if (this.mTextBoxKeyXMLContent.Text != null && this.mTextBoxKeyXMLContent.Text.Length > 0)
+      {
+        this.mListBoxKeyXMLContent.Items.Add(this.mTextBoxKeyXMLContent.Text);
+        this.mTextBoxKeyXMLContent.Text = null;
+      }
+      else
+      {
+        this.PushLog("XML Content Panel: Attempted to add null Key XML Content.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Cancel Add Content event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonCancelAddContent_Click(object sender, EventArgs e)
+    {
+      this.MClearContentPanel();
+      this.mPanelAddEditContent.Visible = false;
+      this.mPanelAddEditContent.Hide();
+    }
+
+    /// <summary>
+    /// Add explicit address event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddExplicitAddressValue_Click(object sender, EventArgs e)
+    {
+      if (this.mTextBoxExplicitAddressValue.Text != null && this.mTextBoxExplicitAddressValue.Text.Length > 0)
+      {
+        this.mListBoxExplicitAddressValues.Items.Add(this.mTextBoxExplicitAddressValue.Text);
+        this.mTextBoxExplicitAddressValue.Text = null;
+      }
+      else
+      {
+        this.PushLog("Add/Edit Explicit Address: add explicit address value, but no explicit address value present", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Delete Explicit Address event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonDeleteExplicitValue_Click(object sender, EventArgs e)
+    {
+      if (this.mListBoxExplicitAddressValues.SelectedItems.Count > 0)
+      {
+        List<object> objes = new List<object>();
+        foreach (object obj in this.mListBoxExplicitAddressValues.SelectedItems)
+        {
+          objes.Add(obj);
+        }
+
+        foreach (object obj in objes)
+        {
+          this.mListBoxExplicitAddressValues.Items.Remove(obj);
+        }
+      }
+      else
+      {
+        this.PushLog("Add/Edit Explicit Address: delete explicit address values, but no addresses selected", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Cancel the add explicit address and clear the panel
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonCancelAddExplicitAddress_Click(object sender, EventArgs e)
+    {
+      this.MHideExplicitAddressPanel();
+      this.MClearContentPanel();
+    }
+
+    /// <summary>
+    /// Shoe the explicit address panel
+    /// </summary>
+    private void MShowExplicitAddressPanel()
+    {
+      this.mPanelAddEditExplicitAddress.Visible = true;
+      this.mPanelAddEditExplicitAddress.Show();
+      this.mPanelAddEditExplicitAddress.BringToFront();
+    }
+
+    /// <summary>
+    /// Hide the explicit address panel
+    /// </summary>
+    private void MHideExplicitAddressPanel()
+    {
+      this.mPanelAddEditExplicitAddress.Hide();
+      this.mPanelAddEditExplicitAddress.Visible = false;
+    }
+
+    /// <summary>
+    /// Clear explicit address panel content
+    /// </summary>
+    private void MClearExplicitAddressPanel()
+    {
+      this.mComboBoxExplicitAddressScheme.Text = null;
+      this.mComboBoxExplicitAddressScheme.SelectedIndex = -1;
+      this.mListBoxExplicitAddressValues.Items.Clear();
+      this.mTextBoxExplicitAddressValue.Text = null;
+    }
+
+    /// <summary>
+    /// Add Explicit Address event handler
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtonAddExplicitAddress_Click(object sender, EventArgs e)
+    {
+      if ((this.mComboBoxExplicitAddressScheme.SelectedIndex > -1 || (this.mComboBoxExplicitAddressScheme.Text != null && this.mComboBoxExplicitAddressScheme.Text.Length > 0)) &&
+          (this.mListBoxExplicitAddressValues.Items.Count > 0))
+      {
+        ValueScheme mVS = new ValueScheme();
+        if (this.mComboBoxExplicitAddressScheme.SelectedIndex > -1)
+        {
+          mVS.ExplicitAddressScheme = this.mComboBoxExplicitAddressScheme.SelectedItem.ToString();
+        }
+        else if (this.mComboBoxExplicitAddressScheme.Text != null)
+        {
+          mVS.ExplicitAddressScheme = this.mComboBoxExplicitAddressScheme.Text;
+        }
+
+        foreach (object obj in this.mListBoxExplicitAddressValues.Items)
+        {
+          if (mVS.ExplicitAddressValue == null)
+          {
+            mVS.ExplicitAddressValue = new List<string>();
+          }
+
+          mVS.ExplicitAddressValue.Add(obj.ToString());
+        }
+
+        this.mListExplicitAddress.Items.Add(mVS);
+
+        this.MHideExplicitAddressPanel();
+        this.MClearExplicitAddressPanel();
+      }
+      else
+      {
+        this.PushLog("Adding Explicit Address: Explicit Address is not valid, try again.", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// ValueList Builder form - output not wired to anything
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void ValueListBuilderFormToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      MFormValueList fvl = new MFormValueList();
+      fvl.ShowDialog();
+    }
+
+    /// <summary>
+    /// Show error report in a popup window.
+    /// </summary>
+    /// <param name="errorText">Error message to report</param>
+    private void MShowErrorReportWindow(ArrayList errorText)
+    {
+      MEDXLErrorReport ereport = new MEDXLErrorReport();
+      string[] lines = new string[errorText.Count];
+      int index = 0;
+      foreach (object obj in errorText)
+      {
+        lines[index] = (string)obj;
+        index++;
+      }
+
+      ((TextBox)ereport.Controls["mTextBoxErrorReport"]).Lines = lines;
+      ereport.ShowDialog();
+    }
+
+    /// <summary>
+    /// View Error Report Window, tool bar item
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void ErrorReportWindowToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      ArrayList line = new ArrayList();
+      line.Add("Test message from menu bar.");
+      this.MShowErrorReportWindow(line);
+    }
+
+    /// <summary>
+    /// View Sent Message history tool bar item.
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void SentMessageHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      if (this.sentHistory.Count > 0)
+      {
+        EDXLDEViewerForm formHistoryViewer = new EDXLDEViewerForm();
+        formHistoryViewer.MLoadViewer("Sent Message History", this.sentHistory, Color.LightSalmon);
+        formHistoryViewer.Show();
+      }
+      else
+      {
+        this.PushLog("Nothing to show. No messages have been sent.", Color.Yellow);
+      }
+    }
+
+    /// <summary>
+    /// View message history tool bar item
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void ReceivedMessageHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+    {
+      if (this.sentHistory.Count > 0)
+      {
+        EDXLDEViewerForm formHistoryViewer = new EDXLDEViewerForm();
+        formHistoryViewer.MLoadViewer("Received Message History", this.receivedHistory, Color.LightCyan);
+        formHistoryViewer.Show();
+      }
+      else
+      {
+        this.PushLog("Nothing to show. No messages have been sent.", Color.Yellow);
+      }
+    }
+
+    /// <summary>
+    /// Add Distribution Reference
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtDistRefAdd_Click(object sender, EventArgs e)
+    {
+      MFormDistRef fdr = new MFormDistRef();
+      fdr.ShowDialog();
+      string drs = fdr.MGetDistRefString();
+      if (drs != null)
+      {
+        this.mListDistRef.Items.Add(drs);
+      }
+      else
+      {
+        this.PushLog("The distribution reference format was not valid", Color.Red);
+      }
+    }
+
+    /// <summary>
+    /// Edit Distribution Reference button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtDistRefEdit_Click(object sender, EventArgs e)
+    {
+      if (this.mListDistRef.SelectedIndex >= 0)
+      {
+        MFormDistRef fdr = new MFormDistRef((string)this.mListDistRef.SelectedItem);
+        fdr.ShowDialog();
+        string drs = fdr.MGetDistRefString();
+        if (drs != null)
+        {
+          this.mListDistRef.Items[this.mListDistRef.SelectedIndex] = drs;
+        }
+        else
+        {
+          this.PushLog("The distribution reference format was not valid", Color.Red);
+        }
+      }
+      else
+      {
+        this.PushLog("No Distribution Reference selected, using Add instead", Color.Yellow);
+        this.MButtDistRefAdd_Click(sender, e);
+      }
+    }
+
+    /// <summary>
+    /// Delete Distribution Reference button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtDistRefDelete_Click(object sender, EventArgs e)
+    {
+      this.MRemoveSelectedValuesFromListBox(this.mListDistRef);
+    }
+
+    /// <summary>
+    /// View Sent Message history button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtViewSent_Click(object sender, EventArgs e)
+    {
+      // use function from tool bar click event
+      this.SentMessageHistoryToolStripMenuItem_Click(sender, e);
+    }
+
+    /// <summary>
+    /// View Received message history button
+    /// </summary>
+    /// <param name="sender">Object generating the event</param>
+    /// <param name="e">event generated by the object</param>
+    private void MButtViewReceived_Click(object sender, EventArgs e)
+    {
+      // use function from tool bar click event
+      this.ReceivedMessageHistoryToolStripMenuItem_Click(sender, e);
+    }
+  }
+}

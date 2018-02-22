@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BE967D6A-D610-4308-B07E-B797A4A497F2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.EDXL.SitRep</RootNamespace>
+    <AssemblyName>EMS.EDXL.SitRep</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\EMS.EDXL.SitRep.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\EMS.EDXL.SitRep.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\EMS.EDXL.CIQ\EMS.EDXL.CIQ.csproj">
+      <Project>{c7355e44-2165-4f97-b3fb-ecb6ec810a7f}</Project>
+      <Name>EMS.EDXL.CIQ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.CT\EMS.EDXL.CT.csproj">
+      <Project>{655e62ae-f1fd-40a9-aa18-8972729aa69c}</Project>
+      <Name>EMS.EDXL.CT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.EXT\EMS.EDXL.EXT.csproj">
+      <Project>{ef02309e-a2fa-43fe-98c5-d48260e24730}</Project>
+      <Name>EMS.EDXL.EXT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.GSF\EMS.EDXL.GSF.csproj">
+      <Project>{9ba228fe-4c8d-4210-946f-738168ca1ce4}</Project>
+      <Name>EMS.EDXL.GSF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.Shared\EMS.EDXL.Shared.csproj">
+      <Project>{cb0a3fcb-b76c-4b64-b3d7-382965ad7743}</Project>
+      <Name>EMS.EDXL.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.Utilities\EMS.EDXL.Utilities.csproj">
+      <Project>{0688c796-292d-4228-a36a-9a72e7821203}</Project>
+      <Name>EMS.EDXL.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\ConfidenceDefaultValues.cs">
+      <Link>ConfidenceDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\IncidentLifecycleDefaultValues.cs">
+      <Link>IncidentLifecycleDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\IReport.cs">
+      <Link>IReport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\IReportType.cs">
+      <Link>IReportType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\DisasterInformationType.cs">
+      <Link>Reports\DisasterInformationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\FieldObservationReport.cs">
+      <Link>Reports\FieldObservationReport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\GeographicSizeType.cs">
+      <Link>Reports\GeographicSizeType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\ImmediateNeedsCategoryDefaultValues.cs">
+      <Link>Reports\ImmediateNeedsCategoryDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\IncidentComplexityDefaultValues.cs">
+      <Link>Reports\IncidentComplexityDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\IncidentInformationType.cs">
+      <Link>Reports\IncidentInformationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\IncidentKindDefaultValues.cs">
+      <Link>Reports\IncidentKindDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\IncidentStagingType.cs">
+      <Link>Reports\IncidentStagingType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\JurisdictionInformationType.cs">
+      <Link>Reports\JurisdictionInformationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\SituationInformationReport.cs">
+      <Link>Reports\SituationInformationReport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\SubIncidentInformationType.cs">
+      <Link>Reports\SubIncidentInformationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\ReportVersionDefaultValues.cs">
+      <Link>ReportVersionDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\SeverityDefaultValues.cs">
+      <Link>SeverityDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\SitRepNamespaces.cs">
+      <Link>SitRepNamespaces.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\SitRepv1_0.cs">
+      <Link>SitRepv1_0.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\UrgencyDefaultValues.cs">
+      <Link>UrgencyDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0688C796-292D-4228-A36A-9A72E7821203}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.EDXL.Utilities</RootNamespace>
+    <AssemblyName>EMS.EDXL.Utilities</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\EMS.EDXL.Utilities.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\EMS.EDXL.Utilities.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\EMS.EDXL.CT\EMS.EDXL.CT.csproj">
+      <Project>{655e62ae-f1fd-40a9-aa18-8972729aa69c}</Project>
+      <Name>EMS.EDXL.CT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.Shared\EMS.EDXL.Shared.csproj">
+      <Project>{cb0a3fcb-b76c-4b64-b3d7-382965ad7743}</Project>
+      <Name>EMS.EDXL.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\EDXL\EMS.EDXL.Utilities\ComplexTypeBase.cs">
+      <Link>ComplexTypeBase.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.Utilities\EDXLConstants.cs">
+      <Link>EDXLConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.Utilities\IComposable.cs">
+      <Link>IComposable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.Utilities\IContentObject.cs">
+      <Link>IContentObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.Utilities\IGeoRSS.cs">
+      <Link>IGeoRSS.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.Utilities\SerializableDictionary.cs">
+      <Link>SerializableDictionary.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.Utilities\StringGeoTools.cs">
+      <Link>StringGeoTools.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.Utilities\SyndicationItem.cs">
+      <Link>SyndicationItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.Utilities\ValidationException.cs">
+      <Link>ValidationException.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

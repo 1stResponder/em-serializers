@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F4C85511-5255-4819-9A5C-4BB60AEB330E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.NIEM.Resource</RootNamespace>
+    <AssemblyName>EMS.NIEM.Resource</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>lib\net45\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>lib\net45\EMS.NIEM.Resource.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Resource\ResourceDetail.cs">
+      <Link>ResourceDetail.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Resource\ResourceEIDDStatus.cs">
+      <Link>ResourceEIDDStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Resource\ResourceEIDDStatusCodeList.cs">
+      <Link>ResourceEIDDStatusCodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Resource\ResourceOrganization.cs">
+      <Link>ResourceOrganization.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Resource\ResourcePrimaryStatusCodeList.cs">
+      <Link>ResourcePrimaryStatusCodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Resource\ResourceStatus.cs">
+      <Link>ResourceStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Resource\ResourceUCADStatus.cs">
+      <Link>ResourceUCADStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Resource\ResourceUCADStatusCodeList.cs">
+      <Link>ResourceUCADStatusCodeList.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NIEMCommon\NIEMCommon.csproj">
+      <Project>{e3a9c892-68bd-46c0-88d0-f7dae322582e}</Project>
+      <Name>NIEMCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

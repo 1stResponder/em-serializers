@@ -1,0 +1,11 @@
+<StyleCopSettings Version="105">
+  <GlobalSettings>
+    <CollectionProperty Name="RecognizedWords">
+      <Value>Casualtyand</Value>
+      <Value>CasualtyandIllnessSummary</Value>
+      <Value>enroute</Value>
+      <Value>Notifiable</Value>
+      <Value>Organizationand</Value>
+    </CollectionProperty>
+  </GlobalSettings>
+</StyleCopSettings>

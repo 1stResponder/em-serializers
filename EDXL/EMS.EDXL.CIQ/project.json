@@ -1,0 +1,27 @@
+{
+  "name":  "EMS.EDXL.CIQ",
+  "description": "CIQ Libraries for EMS",
+  "authors": [ "ArdentMC" ],
+  "title": "EMS.EDXL.CIQ",
+  "version": "1.0.0-*",
+  "dependencies": {
+    "EMS.EDXL.Shared": "1.0.0-*",
+    "NETStandard.Library": "1.6.1"
+  },
+  "frameworks": {
+    "netstandard1.6.1": {
+      "imports": "dnxcore50"
+    }
+  },
+  "configurations": {
+    "EDXLDebug": {}
+  },
+  "packOptions": {
+    "owners": [ "ArdentMC" ],
+    "tags": [ "EDXL", "EMS", "NIEM" ]
+  },
+  "buildOptions": {
+    "define": [],
+    "xmlDoc": true
+  }
+}

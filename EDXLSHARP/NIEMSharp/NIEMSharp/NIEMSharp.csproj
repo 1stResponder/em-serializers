@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>11.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7BAB8BEF-2566-406A-84D8-15EE23BBD2A9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NIEMSharp</RootNamespace>
+    <AssemblyName>NIEMSharp</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile78</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LibDebug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\LibDebug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>NiemSharp.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="deserialConvert.cs" />
+    <Compile Include="MutualAidRequest\GenericResourceKind.cs" />
+    <Compile Include="MutualAidRespond\ResponseResources\ResponseResourceKind.cs" />
+    <Compile Include="NIEMUtil.cs" />
+    <Compile Include="SubsitutePropertyNameContractResolver.cs" />
+    <Compile Include="MutualAidDetail.cs" />
+    <Compile Include="MutualAidMessage.cs" />
+    <Compile Include="MutualAidRequest\AidRequested.cs" />
+    <Compile Include="MutualAidRequest\RequestResources\GenericResource.cs" />
+    <Compile Include="CoreTypes\LocationExtension.cs" />
+    <Compile Include="MutualAidRequest\RequestResources\MissionNeed.cs" />
+    <Compile Include="MutualAidRequest\RequestedResources.cs" />
+    <Compile Include="MutualAidRequest\RequestResources\RequestResourceKind.cs" />
+    <Compile Include="MutualAidRequest\RequestResources\SpecificResource.cs" />
+    <Compile Include="MutualAidRespond\RespondingResource.cs" />
+    <Compile Include="MutualAidRespond\AidResponding.cs" />
+    <Compile Include="CoreTypes\ContactInformation.cs" />
+    <Compile Include="CoreTypes\Credential.cs" />
+    <Compile Include="MutualAidRespond\ResponseResources\Equipment.cs" />
+    <Compile Include="CoreTypes\DateTimeRange.cs" />
+    <Compile Include="MutualAidRespond\ResponseResources\Person.cs" />
+    <Compile Include="CoreTypes\Rank.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MutualAidRespond\ResourceKind.cs" />
+  </ItemGroup>
+  <ItemGroup>
+  <Reference Include="mscorlib" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Bin\Release\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NIEMSHARP.NIEMEMLCLib">
+      <HintPath>lib\NIEMSHARP.NIEMEMLCLib.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="NIEMSharp.snk" />
+    <None Include="Resources\NameSpacePrefixMapping.xml" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

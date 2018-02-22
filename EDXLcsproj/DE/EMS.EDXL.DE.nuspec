@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>EMS.EDXL.DE</id>
+    <version>$version$</version>
+    <title>EMS.EDXL.DE</title>
+	<description>DE Libraries for EMS</description>
+    <authors>ArdentMC</authors>
+    <owners>ArdentMC</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright 2017 ArdentMC</copyright>
+    <tags>EMS EDXL NIEM</tags>
+	<language>en-US</language>
+	<dependencies>
+	  <group targetFramework=".NETFramework4.5" >
+		  <dependency id="EMS.EDXL.CIQ" version="$version$" />
+		  <dependency id="EMS.EDXL.CT" version="$version$" />
+		  <dependency id="EMS.EDXL.EXT" version="$version$" />
+		  <dependency id="EMS.EDXL.GSF" version="$version$" />
+		  <dependency id="Newtonsoft.Json" version="9.0.1" />
+		  <dependency id="EMS.EDXL.Shared" version="$version$" />
+		  <dependency id="EMS.EDXL.SitRep" version="$version$" />
+		  <dependency id="EMS.EDXL.Utilities" version="$version$" />
+	  </group>
+	  <group targetFramework=".NETPortable4.5-Profile259">
+		  <dependency id="EMS.EDXL.CIQ" version="$version$" />
+		  <dependency id="EMS.EDXL.CT" version="$version$" />
+		  <dependency id="EMS.EDXL.EXT" version="$version$" />
+		  <dependency id="EMS.EDXL.GSF" version="$version$" />
+		  <dependency id="Newtonsoft.Json" version="9.0.1" />
+		  <dependency id="EMS.EDXL.Shared" version="$version$" />
+		  <dependency id="EMS.EDXL.SitRep" version="$version$" />
+		  <dependency id="EMS.EDXL.Utilities" version="$version$" />
+	  </group>
+	  <group targetFramework=".NETStandard1.6.1">
+        <dependency id="EMS.EDXL.CIQ" version="$version$" />
+        <dependency id="EMS.EDXL.CT" version="$version$" />
+        <dependency id="EMS.EDXL.EXT" version="$version$" />
+        <dependency id="EMS.EDXL.GSF" version="$version$" />
+        <dependency id="EMS.EDXL.Shared" version="$version$" />
+        <dependency id="EMS.EDXL.SitRep" version="$version$" />
+        <dependency id="EMS.EDXL.Utilities" version="$version$" />
+        <dependency id="Microsoft.EntityFrameworkCore" version="[1.1.0, )" />
+        <dependency id="Microsoft.EntityFrameworkCore.Relational" version="[1.1.0, )" />
+        <dependency id="Microsoft.EntityFrameworkCore.Relational.Specification.Tests" version="[1.1.0, )" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer" version="[1.1.0, )" />
+        <dependency id="Microsoft.EntityFrameworkCore.SqlServer.Design" version="[1.1.0, )" />
+        <dependency id="NETStandard.Library" version="[1.6.1, )" />
+        <dependency id="Newtonsoft.Json" version="[9.0.1, )" />
+        <dependency id="Npgsql" version="[3.2.0, )" />
+        <dependency id="System.IO" version="[4.3.0, )" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

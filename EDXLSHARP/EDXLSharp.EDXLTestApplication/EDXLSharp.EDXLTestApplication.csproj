@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CBF29DF5-33D6-4183-99F6-C36BDDF25CB9}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDXLSharp.EDXLTestApplication</RootNamespace>
+    <AssemblyName>EDXLSharp.EDXLTestApplication</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\AssemblyInfo\EDXLSharp.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ClientHandler.cs" />
+    <Compile Include="EDXLAboutBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EDXLAboutBox.designer.cs">
+      <DependentUpon>EDXLAboutBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EDXLDEViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EDXLDEViewerForm.designer.cs">
+      <DependentUpon>EDXLDEViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helper.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="mEDXLErrorReport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mEDXLErrorReport.designer.cs">
+      <DependentUpon>mEDXLErrorReport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MessageManager.cs" />
+    <Compile Include="mFormDistRef.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="mFormDistRef.designer.cs">
+      <DependentUpon>mFormDistRef.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NameObject.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Receiver.cs" />
+    <Compile Include="SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SettingsForm.Designer.cs" />
+    <Compile Include="TestAppSettings.cs" />
+    <Compile Include="BlockingQueue.cs" />
+    <Compile Include="ValueListBuilder.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValueListBuilder.Designer.cs" />
+    <Compile Include="ValueListView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ValueListView.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="EDXLAboutBox.resx">
+      <DependentUpon>EDXLAboutBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EDXLDEViewerForm.resx">
+      <DependentUpon>EDXLDEViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mEDXLErrorReport.resx">
+      <DependentUpon>mEDXLErrorReport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="mFormDistRef.resx">
+      <DependentUpon>mFormDistRef.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SettingsForm.resx" />
+    <EmbeddedResource Include="ValueListBuilder.resx" />
+    <EmbeddedResource Include="ValueListView.resx" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDXLSharp.EDXLDELib\EDXLSharp.EDXLDELib.csproj">
+      <Project>{AF4FC9A2-B63C-4379-94E1-A2A6ABE6CA62}</Project>
+      <Name>EDXLSharp.EDXLDELib</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\EDXLSharp\EDXLSharp.csproj">
+      <Project>{8DF94F4D-23F5-4803-B5D6-E54028CD3904}</Project>
+      <Name>EDXLSharp</Name>
+      <Private>True</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\AssemblyInfo\EDXLSharp.snk">
+      <Link>EDXLSharp.snk</Link>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

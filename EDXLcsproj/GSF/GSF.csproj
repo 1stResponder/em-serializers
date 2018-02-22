@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C746272F-FB43-4259-A116-20DA93DF247B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.EDXL.GSF</RootNamespace>
+    <AssemblyName>EMS.EDXL.GSF</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>lib\net45\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>lib\net45\EMS.EDXL.GSF.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\EDXL\EMS.EDXL.GSF\CircleByCenterPoint.cs">
+      <Link>CircleByCenterPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.GSF\CircleByCenterPointType.cs">
+      <Link>CircleByCenterPointType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.GSF\EDXLGeoLocation.cs">
+      <Link>EDXLGeoLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.GSF\GMLShape.cs">
+      <Link>GMLShape.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.GSF\GSFNamespaces.cs">
+      <Link>GSFNamespaces.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.GSF\MeasureType.cs">
+      <Link>MeasureType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.GSF\Point.cs">
+      <Link>Point.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.GSF\PointType.cs">
+      <Link>PointType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.GSF\PosType.cs">
+      <Link>PosType.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{4fd6d1ad-d67e-4349-909f-f04986279b63}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0-*",
+  "dependencies": {
+    "EMS.NIEM.NIEMCommon": "1.0.0-*",
+    "EMS.NIEM.Resource": "1.0.0-*",
+    "NETStandard.Library": "1.6.1",
+    "Newtonsoft.Json": "9.0.1"
+  },
+  "frameworks": {
+    "netstandard1.6.1": {
+      "imports": "dnxcore50"
+    }
+  },
+  "buildOptions": {
+    "xmlDoc": true
+  }
+}

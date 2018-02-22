@@ -1,0 +1,8 @@
+<StyleCopSettings Version="105">
+  <GlobalSettings>
+    <CollectionProperty Name="RecognizedWords">
+      <Value>Pos</Value>
+      <Value>srs</Value>
+    </CollectionProperty>
+  </GlobalSettings>
+</StyleCopSettings>

@@ -1,0 +1,10 @@
+<StyleCopSettings Version="105">
+  <GlobalSettings>
+    <CollectionProperty Name="RecognizedWords">
+      <Value>Adequecy</Value>
+      <Value>Decon</Value>
+      <Value>Hr</Value>
+      <Value>reimplantation</Value>
+    </CollectionProperty>
+  </GlobalSettings>
+</StyleCopSettings>

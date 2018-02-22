@@ -1,0 +1,27 @@
+{
+  "name": "EMS.EDXL.Shared",
+  "description": "Shared Libraries for EMS",
+  "authors": [ "ArdentMC" ],
+  "title": "EMS.EDXL.Shared",
+  "version": "1.0.0-*",
+  "dependencies": {
+    "NETStandard.Library": "1.6.1",
+    "System.Collections": "4.3.0",
+    "System.Xml.XmlSerializer": "4.3.0"
+  },
+  "frameworks": {
+    "netstandard1.6.1": {
+      "imports": "dnxcore50"
+    }
+  },
+  "packOptions": {
+    "owners": [ "ArdentMC" ],
+    "tags": [ "EDXL", "EMS", "NIEM" ]
+  },
+  "configurations": {
+    "EDXLDebug": {}
+  },
+  "buildOptions": {
+    "xmlDoc": true
+  }
+}

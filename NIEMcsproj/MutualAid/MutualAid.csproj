@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F76E22AB-69AC-41E6-BE0A-3B8493DFF08B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.NIEM.MutualAid</RootNamespace>
+    <AssemblyName>EMS.NIEM.MutualAid</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>lib\net45\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>lib\net45\EMS.NIEM.MutualAid.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\CoreTypes\ContactInformation.cs">
+      <Link>CoreTypes\ContactInformation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\CoreTypes\Credential.cs">
+      <Link>CoreTypes\Credential.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\CoreTypes\LocationExtension.cs">
+      <Link>CoreTypes\LocationExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\CoreTypes\Rank.cs">
+      <Link>CoreTypes\Rank.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidDetail.cs">
+      <Link>MutualAidDetail.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidMessage.cs">
+      <Link>MutualAidMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRequest\AidRequested.cs">
+      <Link>MutualAidRequest\AidRequested.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRequest\GenericResourceKind.cs">
+      <Link>MutualAidRequest\GenericResourceKind.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRequest\RequestResources\GenericResource.cs">
+      <Link>MutualAidRequest\RequestResources\GenericResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRequest\RequestResources\MissionNeed.cs">
+      <Link>MutualAidRequest\RequestResources\MissionNeed.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRequest\RequestResources\RequestResourceKind.cs">
+      <Link>MutualAidRequest\RequestResources\RequestResourceKind.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRequest\RequestResources\SpecificResource.cs">
+      <Link>MutualAidRequest\RequestResources\SpecificResource.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRespond\AidResponding.cs">
+      <Link>MutualAidRespond\AidResponding.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRespond\ResourceKind.cs">
+      <Link>MutualAidRespond\ResourceKind.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRespond\ResponseResources\Equipment.cs">
+      <Link>MutualAidRespond\ResponseResources\Equipment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRespond\ResponseResources\Person.cs">
+      <Link>MutualAidRespond\ResponseResources\Person.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidRespond\ResponseResources\ResponseResourceKind.cs">
+      <Link>MutualAidRespond\ResponseResources\ResponseResourceKind.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.MutualAid\MutualAidUtil.cs">
+      <Link>MutualAidUtil.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NIEMCommon\NIEMCommon.csproj">
+      <Project>{e3a9c892-68bd-46c0-88d0-f7dae322582e}</Project>
+      <Name>NIEMCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Resource\Resource.csproj">
+      <Project>{f4c85511-5255-4819-9a5c-4bb60aeb330e}</Project>
+      <Name>Resource</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

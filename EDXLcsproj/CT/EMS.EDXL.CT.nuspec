@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>EMS.EDXL.CT</id>
+    <version>$version$</version>
+    <title>EMS.EDXL.CT</title>
+	<description>CT Libraries for EMS</description>
+    <authors>ArdentMC</authors>
+    <owners>ArdentMC</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright 2017 ArdentMC</copyright>
+    <tags>EMS EDXL NIEM</tags>
+	<language>en-US</language>
+	<dependencies>
+	  <group targetFramework=".NETFramework4.5" >
+		<dependency id="EMS.EDXL.CIQ" version="$version$" />
+		<dependency id="EMS.EDXL.Shared" version="$version$" />
+	  </group>
+	  <group targetFramework=".NETPortable4.5-Profile259">
+		<dependency id="EMS.EDXL.CIQ" version="$version$" />
+		<dependency id="EMS.EDXL.Shared" version="$version$"/>
+	  </group>
+	  <group targetFramework=".NETStandard1.6.1">
+        <dependency id="EMS.EDXL.CIQ" version="$version$" />
+        <dependency id="EMS.EDXL.Shared" version="$version$" />
+        <dependency id="NETStandard.Library" version="[1.6.1, )" />
+        <dependency id="System.Collections" version="[4.3.0, )" />
+        <dependency id="System.Xml.XmlDocument" version="[4.3.0, )" />
+        <dependency id="System.Xml.XmlSerializer" version="[4.3.0, )" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

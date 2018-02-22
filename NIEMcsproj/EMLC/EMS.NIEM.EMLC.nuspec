@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>EMS.NIEM.EMLC</id>
+    <version>$version$</version>
+    <title>EMS.NIEM.EMLC</title>
+	<description>EMLC Libraries for EMS</description>
+    <authors>ArdentMC</authors>
+    <owners>ArdentMC</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright 2017 ArdentMC</copyright>
+    <tags>EMS EDXL NIEM</tags>
+	<language>en-US</language>
+	<dependencies>
+	  <group targetFramework=".NETFramework4.5" >
+		  <dependency id="EMS.NIEM.Incident" version="$version$" />
+		  <dependency id="EMS.NIEM.Infrastructure" version="$version$" />
+		  <dependency id="EMS.NIEM.MutualAid" version="$version$" />
+		  <dependency id="Newtonsoft.Json" version="9.0.1" />
+		  <dependency id="EMS.NIEM.NIEMCommon" version="$version$" />
+		  <dependency id="EMS.NIEM.Resource" version="$version$" />
+	  </group>
+	  <group targetFramework=".NETPortable4.5-Profile259">
+		  <dependency id="EMS.EDXL.Shared" version="$version$" />
+		  <dependency id="EMS.NIEM.Incident" version="$version$" />
+		  <dependency id="EMS.NIEM.Infrastructure" version="$version$" />
+		  <dependency id="EMS.NIEM.MutualAid" version="$version$" />
+		  <dependency id="Newtonsoft.Json" version="9.0.1" />
+		  <dependency id="EMS.NIEM.NIEMCommon" version="$version$" />
+		  <dependency id="EMS.NIEM.Resource" version="$version$" />
+	  </group>
+	  <group targetFramework=".NETStandard1.6.1">
+        <dependency id="EMS.NIEM.Incident" version="$version$" />
+        <dependency id="EMS.NIEM.Infrastructure" version="$version$" />
+        <dependency id="EMS.NIEM.MutualAid" version="$version$" />
+        <dependency id="EMS.NIEM.NIEMCommon" version="$version$" />
+        <dependency id="EMS.NIEM.Resource" version="$version$" />
+        <dependency id="NETStandard.Library" version="[1.6.1, )" />
+        <dependency id="Newtonsoft.Json" version="[9.0.1, )" />
+        <dependency id="System.Reflection.TypeExtensions" version="[4.3.0, )" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

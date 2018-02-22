@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C7355E44-2165-4F97-B3FB-ECB6EC810A7F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.EDXL.CIQ</RootNamespace>
+    <AssemblyName>EMS.EDXL.CIQ</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\EMS.EDXL.CIQ.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\EMS.EDXL.CIQ.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\CIQNamespaces.cs">
+      <Link>CIQNamespaces.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\Address.cs">
+      <Link>xAL\Address.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\AddressType.cs">
+      <Link>xAL\AddressType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\AdministrativeAreaType.cs">
+      <Link>xAL\AdministrativeAreaType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\CountryType.cs">
+      <Link>xAL\CountryType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\IdentifierElementTypeList.cs">
+      <Link>xAL\IdentifierElementTypeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\IdentifierType.cs">
+      <Link>xAL\IdentifierType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\LocalityType.cs">
+      <Link>xAL\LocalityType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\SubAdministrativeAreaType.cs">
+      <Link>xAL\SubAdministrativeAreaType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\SubLocalityType.cs">
+      <Link>xAL\SubLocalityType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\ThoroughfareDetail.cs">
+      <Link>xAL\ThoroughfareDetail.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\ThoroughfareName.cs">
+      <Link>xAL\ThoroughfareName.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\ThoroughfareNameTypeList.cs">
+      <Link>xAL\ThoroughfareNameTypeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\ThoroughfareNumber.cs">
+      <Link>xAL\ThoroughfareNumber.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\ThoroughfareType.cs">
+      <Link>xAL\ThoroughfareType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xAL\ThoroughfareTypeList.cs">
+      <Link>xAL\ThoroughfareTypeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xNL\OrganisationIDTypeList.cs">
+      <Link>xNL\OrganisationIDTypeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xNL\OrganisationNameType.cs">
+      <Link>xNL\OrganisationNameType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xNL\PersonNameElement.cs">
+      <Link>xNL\PersonNameElement.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xNL\PersonNameElementList.cs">
+      <Link>xNL\PersonNameElementList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\CommunicationMediaType.cs">
+      <Link>xPIL\CommunicationMediaType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\ContactNumber.cs">
+      <Link>xPIL\ContactNumber.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\ContactNumberElement.cs">
+      <Link>xPIL\ContactNumberElement.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\ContactNumberElementList.cs">
+      <Link>xPIL\ContactNumberElementList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\ContactNumberUsageList.cs">
+      <Link>xPIL\ContactNumberUsageList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\ElectronicAddressIdentifier.cs">
+      <Link>xPIL\ElectronicAddressIdentifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\ElectronicAddressIdentifierTypeList.cs">
+      <Link>xPIL\ElectronicAddressIdentifierTypeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\ElectronicAddressIdentifierUsageList.cs">
+      <Link>xPIL\ElectronicAddressIdentifierUsageList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\Identifier.cs">
+      <Link>xPIL\Identifier.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\IdentifierElement.cs">
+      <Link>xPIL\IdentifierElement.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\OrganizationInfo.cs">
+      <Link>xPIL\OrganizationInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\OrganizationInformation.cs">
+      <Link>xPIL\OrganizationInformation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\Party.cs">
+      <Link>xPIL\Party.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\PartyIdentifierElementList.cs">
+      <Link>xPIL\PartyIdentifierElementList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\PartyIdentifierTypeList.cs">
+      <Link>xPIL\PartyIdentifierTypeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\PartyNameType.cs">
+      <Link>xPIL\PartyNameType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.CIQ\xPIL\PersonDetailsType.cs">
+      <Link>xPIL\PersonDetailsType.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EMS.EDXL.Shared\EMS.EDXL.Shared.csproj">
+      <Project>{cb0a3fcb-b76c-4b64-b3d7-382965ad7743}</Project>
+      <Name>EMS.EDXL.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>EMS.NIEM.Infrastructure</id>
+    <version>$version$</version>
+    <title>EMS.NIEM.Infrastructure</title>
+	<description>Infrastructure Libraries for EMS</description>
+    <authors>ArdentMC</authors>
+    <owners>ArdentMC</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <copyright>Copyright 2017 ArdentMC</copyright>
+    <tags>EMS EDXL NIEM</tags>
+	<language>en-US</language>
+	<dependencies>
+	  <group targetFramework=".NETFramework4.5" >
+		  <dependency id="Newtonsoft.Json" version="9.0.1" />
+		  <dependency id="EMS.NIEM.NIEMCommon" version="$version$" />
+	  </group>
+	  <group targetFramework=".NETPortable4.5-Profile259">
+		  <dependency id="EMS.EDXL.Shared" version="$version$" />
+		  <dependency id="Newtonsoft.Json" version="9.0.1" />
+		  <dependency id="EMS.NIEM.NIEMCommon" version="$version$" />
+	  </group>
+	  <group targetFramework=".NETStandard1.6.1">
+        <dependency id="EMS.NIEM.NIEMCommon" version="$version$" />
+        <dependency id="NETStandard.Library" version="[1.6.1, )" />
+        <dependency id="Newtonsoft.Json" version="[9.0.1, )" />
+      </group>
+    </dependencies>
+  </metadata>
+</package>

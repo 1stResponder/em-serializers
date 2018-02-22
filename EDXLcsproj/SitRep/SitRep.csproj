@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{978A479B-640E-450E-B551-248037D9D2A3}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.EDXL.SitRep</RootNamespace>
+    <AssemblyName>EMS.EDXL.SitRep</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>lib\net45\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>lib\net45\EMS.EDXL.SitRep.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\ConfidenceDefaultValues.cs">
+      <Link>ConfidenceDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\IncidentLifecycleDefaultValues.cs">
+      <Link>IncidentLifecycleDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\IReport.cs">
+      <Link>IReport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\IReportType.cs">
+      <Link>IReportType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\DisasterInformationType.cs">
+      <Link>Reports\DisasterInformationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\FieldObservationReport.cs">
+      <Link>Reports\FieldObservationReport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\GeographicSizeType.cs">
+      <Link>Reports\GeographicSizeType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\ImmediateNeedsCategoryDefaultValues.cs">
+      <Link>Reports\ImmediateNeedsCategoryDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\IncidentComplexityDefaultValues.cs">
+      <Link>Reports\IncidentComplexityDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\IncidentInformationType.cs">
+      <Link>Reports\IncidentInformationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\IncidentKindDefaultValues.cs">
+      <Link>Reports\IncidentKindDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\IncidentStagingType.cs">
+      <Link>Reports\IncidentStagingType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\JurisdictionInformationType.cs">
+      <Link>Reports\JurisdictionInformationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\SituationInformationReport.cs">
+      <Link>Reports\SituationInformationReport.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\Reports\SubIncidentInformationType.cs">
+      <Link>Reports\SubIncidentInformationType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\ReportVersionDefaultValues.cs">
+      <Link>ReportVersionDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\SeverityDefaultValues.cs">
+      <Link>SeverityDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\SitRepNamespaces.cs">
+      <Link>SitRepNamespaces.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\SitRepv1_0.cs">
+      <Link>SitRepv1_0.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.SitRep\UrgencyDefaultValues.cs">
+      <Link>UrgencyDefaultValues.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CIQ\CIQ.csproj">
+      <Project>{0dc0343d-92b0-4724-94ea-fc04be168a73}</Project>
+      <Name>CIQ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CT\CT.csproj">
+      <Project>{b8a788b9-6d16-4c66-83c0-f511ee7fd81b}</Project>
+      <Name>CT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EXT\EXT.csproj">
+      <Project>{088dc7bd-2b6d-4fc3-b75d-3d4ad3b6fd3f}</Project>
+      <Name>EXT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GSF\GSF.csproj">
+      <Project>{c746272f-fb43-4259-a116-20da93df247b}</Project>
+      <Name>GSF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Shared\Shared.csproj">
+      <Project>{4fd6d1ad-d67e-4349-909f-f04986279b63}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{e92cadcb-9c9b-4247-a6f8-38685936a581}</Project>
+      <Name>Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

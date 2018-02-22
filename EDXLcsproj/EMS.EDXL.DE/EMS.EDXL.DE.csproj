@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CC75ACA0-41E5-47F0-8CDC-AF26723DF213}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.EDXL.DE</RootNamespace>
+    <AssemblyName>EMS.EDXL.DE</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\EMS.EDXL.DE.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\EMS.EDXL.DE.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\EMS.EDXL.CIQ\EMS.EDXL.CIQ.csproj">
+      <Project>{c7355e44-2165-4f97-b3fb-ecb6ec810a7f}</Project>
+      <Name>EMS.EDXL.CIQ</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.CT\EMS.EDXL.CT.csproj">
+      <Project>{655e62ae-f1fd-40a9-aa18-8972729aa69c}</Project>
+      <Name>EMS.EDXL.CT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.EXT\EMS.EDXL.EXT.csproj">
+      <Project>{ef02309e-a2fa-43fe-98c5-d48260e24730}</Project>
+      <Name>EMS.EDXL.EXT</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.GSF\EMS.EDXL.GSF.csproj">
+      <Project>{9ba228fe-4c8d-4210-946f-738168ca1ce4}</Project>
+      <Name>EMS.EDXL.GSF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.Shared\EMS.EDXL.Shared.csproj">
+      <Project>{cb0a3fcb-b76c-4b64-b3d7-382965ad7743}</Project>
+      <Name>EMS.EDXL.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.SitRep\EMS.EDXL.SitRep.csproj">
+      <Project>{be967d6a-d610-4308-b07e-b797a4a497f2}</Project>
+      <Name>EMS.EDXL.SitRep</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.EDXL.Utilities\EMS.EDXL.Utilities.csproj">
+      <Project>{0688c796-292d-4228-a36a-9a72e7821203}</Project>
+      <Name>EMS.EDXL.Utilities</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\ContentObject.cs">
+      <Link>ContentObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\DEUtils.cs">
+      <Link>DEUtils.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\DEv1_0.cs">
+      <Link>DEv1_0.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\NonXMLContentType.cs">
+      <Link>NonXMLContentType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\StatusValue.cs">
+      <Link>StatusValue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\TargetAreaType.cs">
+      <Link>TargetAreaType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\TypeValue.cs">
+      <Link>TypeValue.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\ValueList.cs">
+      <Link>ValueList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\ValueScheme.cs">
+      <Link>ValueScheme.cs</Link>
+    </Compile>
+    <Compile Include="..\..\EDXL\EMS.EDXL.DE\XMLContentType.cs">
+      <Link>XMLContentType.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

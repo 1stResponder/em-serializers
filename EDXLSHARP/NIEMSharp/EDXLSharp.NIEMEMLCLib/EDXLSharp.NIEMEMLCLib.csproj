@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4EEA425E-06A1-43C5-B60F-E026283FE535}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NIEMSHARP.NIEMEMLCLib</RootNamespace>
+    <AssemblyName>NIEMSHARP.NIEMEMLCLib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>Bin\Debug\NIEMSHARP.NIEMEMLCLib.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>..\Bin\Release\NIEMSHARP.NIEMEMLCLib.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\AssemblyInfo\EDXLSharp.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'LibDebug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\LibDebug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>Bin\Debug\NIEMSHARP.NIEMEMLCLib.XML</DocumentationFile>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EDXLSharp">
+      <HintPath>lib\EDXLSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\Bin\Release\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Address.cs" />
+    <Compile Include="AddressCrossStreet.cs" />
+    <Compile Include="CoreWrapper\AddressGrid.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="CoreWrapper\AreaRegion.cs" />
+    <Compile Include="CoreWrapper\IdentificationID.cs" />
+    <Compile Include="CoreWrapper\LocationEllipse.cs" />
+    <Compile Include="CoreWrapper\LocationExternalPolygon.cs" />
+    <Compile Include="CoreWrapper\LocationLineString.cs" />
+    <Compile Include="CoreWrapper\NIEMDateTime.cs" />
+    <Compile Include="CountryCodeList.cs" />
+    <Compile Include="deSerialEventConverter.cs" />
+    <Compile Include="Event.cs" />
+    <Compile Include="EventComment.cs" />
+    <Compile Include="EventCommunityExtensions.cs" />
+    <Compile Include="EventDetails.cs" />
+    <Compile Include="EventLink.cs" />
+    <Compile Include="EventLinkRelationCodeList.cs" />
+    <Compile Include="EventLocation.cs" />
+    <Compile Include="EventTypeCodeList.cs" />
+    <Compile Include="EventTypeDescriptor.cs" />
+    <Compile Include="EventValidityDateTimeRange.cs" />
+    <Compile Include="FullTelephoneNumber.cs" />
+    <Compile Include="CoreWrapper\Geo4NIEM\Ellipse.cs" />
+    <Compile Include="CoreWrapper\Geo4NIEM\GML.cs" />
+    <Compile Include="CoreWrapper\Geo4NIEM\LinearRing.cs" />
+    <Compile Include="CoreWrapper\Geo4NIEM\LineString.cs" />
+    <Compile Include="CoreWrapper\Geo4NIEM\Polygon.cs" />
+    <Compile Include="IncidentLocationExtension.cs" />
+    <Compile Include="Incident\IncidentEIDDStatus.cs" />
+    <Compile Include="Incident\IncidentEIDDStatusCodeList.cs" />
+    <Compile Include="Incident\IncidentDetail.cs" />
+    <Compile Include="Incident\IncidentPulsePointStatus.cs" />
+    <Compile Include="Incident\IncidentPulsePointStatusCodeList.cs" />
+    <Compile Include="Incident\IncidentStatus.cs" />
+    <Compile Include="Incident\IncidentOrganization.cs" />
+    <Compile Include="Incident\IncidentPrimaryStatusCodeList.cs" />
+    <Compile Include="Infrastructure\InfrastructureDetail.cs" />
+    <Compile Include="Infrastructure\InfrastructurePrimaryStatusCodeList.cs" />
+    <Compile Include="Infrastructure\InfrastructureStatus.cs" />
+    <Compile Include="Infrastructure\InfrastructureTrendCodeList.cs" />
+    <Compile Include="Infrastructure\PointOfContact.cs" />
+    <Compile Include="LinkedEventCategory.cs" />
+    <Compile Include="LocationCreationCodeList.cs" />
+    <Compile Include="LocationCylinder.cs" />
+    <Compile Include="LocationPoint.cs" />
+    <Compile Include="LocationStreet.cs" />
+    <Compile Include="MGRSCoordinate.cs" />
+    <Compile Include="NIEMEmlcUtil.cs" />
+    <Compile Include="Point.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AltStatus.cs" />
+    <Compile Include="Resource\ResourceEIDDStatus.cs" />
+    <Compile Include="Resource\ResourceEIDDStatusCodeList.cs" />
+    <Compile Include="Resource\ResourceNIMSDefinition.cs" />
+    <Compile Include="Resource\ResourceOrganization.cs" />
+    <Compile Include="Resource\ResourcePrimaryStatusCodeList.cs" />
+    <Compile Include="Resource\ResourceStatus.cs" />
+    <Compile Include="Resource\ResourceDetail.cs" />
+    <Compile Include="TextStatus.cs" />
+    <Compile Include="Resource\ResourceUCADStatus.cs" />
+    <Compile Include="Resource\ResourceUCADStatusCodeList.cs" />
+    <Compile Include="TelephoneNumber.cs" />
+    <Compile Include="TelephoneNumberRepresentation.cs" />
+    <Compile Include="USNGCoordinate.cs" />
+    <Compile Include="USStateCodeList.cs" />
+    <Compile Include="UTMCoordinate.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\AssemblyInfo\EDXLSharp.snk">
+      <Link>EDXLSharp.snk</Link>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NIEMSharp\NIEMSharp.csproj">
+      <Project>{7BAB8BEF-2566-406A-84D8-15EE23BBD2A9}</Project>
+      <Name>NIEMSharp</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{3FB034DC-24D4-4BFE-BFCF-CBC59A3740B7}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.NIEM.EMLC</RootNamespace>
+    <AssemblyName>EMS.NIEM.EMLC</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\EMS.NIEM.EMLC.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\EMS.NIEM.EMLC.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\EDXLConstants.cs">
+      <Link>EDXLConstants.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\Event.cs">
+      <Link>Event.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\EventComment.cs">
+      <Link>EventComment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\EventCommunityExtensions.cs">
+      <Link>EventCommunityExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\EventLink.cs">
+      <Link>EventLink.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\EventLinkRelationCodeList.cs">
+      <Link>EventLinkRelationCodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\EventLocation.cs">
+      <Link>EventLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\EventTypeDescriptor.cs">
+      <Link>EventTypeDescriptor.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\IComposable.cs">
+      <Link>IComposable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\IGeoRSS.cs">
+      <Link>IGeoRSS.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\LinkedEventCategory.cs">
+      <Link>LinkedEventCategory.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\LocationCreationCodeList.cs">
+      <Link>LocationCreationCodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\LocationCylinder.cs">
+      <Link>LocationCylinder.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\LocationPoint.cs">
+      <Link>LocationPoint.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\NIEMEmlcUtil.cs">
+      <Link>NIEMEmlcUtil.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\USNGCoordinate.cs">
+      <Link>USNGCoordinate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.EMLC\ValueList.cs">
+      <Link>ValueList.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EDXLcsproj\EMS.EDXL.Shared\EMS.EDXL.Shared.csproj">
+      <Project>{cb0a3fcb-b76c-4b64-b3d7-382965ad7743}</Project>
+      <Name>EMS.EDXL.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.NIEM.Sensor\EMS.NIEM.Sensor.csproj">
+      <Project>{9299f219-3064-4066-bbd3-af0176645816}</Project>
+      <Name>EMS.NIEM.EMLC.Sensor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.NIEM.Incident\EMS.NIEM.Incident.csproj">
+      <Project>{96ac2b17-408b-4efd-a4f6-a04f9a8eb096}</Project>
+      <Name>EMS.NIEM.Incident</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.NIEM.Infrastructure\EMS.NIEM.Infrastructure.csproj">
+      <Project>{8b103673-3d8d-4809-a19a-450f981ca632}</Project>
+      <Name>EMS.NIEM.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.NIEM.MutualAid\EMS.NIEM.MutualAid.csproj">
+      <Project>{4775d88c-0cce-4a36-a3ff-e934de539c05}</Project>
+      <Name>EMS.NIEM.MutualAid</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.NIEM.NIEMCommon\EMS.NIEM.NIEMCommon.csproj">
+      <Project>{04622026-6b1c-445d-972a-35cb50217891}</Project>
+      <Name>EMS.NIEM.NIEMCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EMS.NIEM.Resource\EMS.NIEM.Resource.csproj">
+      <Project>{79ea8cc5-233a-4f95-a042-fda4c5af9448}</Project>
+      <Name>EMS.NIEM.Resource</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

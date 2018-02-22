@@ -1,0 +1,165 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DDD0D3A4-DDF9-4A71-BFEB-638EDBAB8224}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EDXLSharp.EDXLHAVELib</RootNamespace>
+    <AssemblyName>EDXLSharp.EDXLHAVELib</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\Bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\Bin\Release\EDXLSharp.EDXLHAVELib.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\AssemblyInfo\EDXLSharp.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyInfo\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ActiveStatusType.cs" />
+    <Compile Include="Activity24HrType.cs" />
+    <Compile Include="AdequecyType.cs" />
+    <Compile Include="BedCapacityType.cs" />
+    <Compile Include="BedTypeType.cs" />
+    <Compile Include="CapacityStatusType.cs" />
+    <Compile Include="CapacityType.cs" />
+    <Compile Include="ClinicalStatusType.cs" />
+    <Compile Include="DeconCapacityStatusType.cs" />
+    <Compile Include="DeconCapacityType.cs" />
+    <Compile Include="EmergencyDepartmentStatusType.cs" />
+    <Compile Include="EMSOffloadStatusType.cs" />
+    <Compile Include="EMSTrafficStatusTypeType.cs" />
+    <Compile Include="EMSTrafficType.cs" />
+    <Compile Include="FacilityOperationsType.cs" />
+    <Compile Include="FacilityStatusType.cs" />
+    <Compile Include="HAVE.cs" />
+    <Compile Include="HAVEEnumUtils.cs" />
+    <Compile Include="HospitalFacilityStatusType.cs" />
+    <Compile Include="HospitalResourcesStatusType.cs" />
+    <Compile Include="HospitalType.cs" />
+    <Compile Include="MorgueCapacityStatusType.cs" />
+    <Compile Include="OffloadType.cs" />
+    <Compile Include="OrganizationType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="SecurityStatusType.cs" />
+    <Compile Include="ServiceCoverageStatusType.cs" />
+    <Compile Include="SurgerySubType.cs" />
+    <Compile Include="TraumaCenterServicesLevelType.cs" />
+    <Compile Include="TriageCodeType.cs" />
+    <Compile Include="TriageCodeValueType.cs" />
+    <Compile Include="TriageCountType.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\AssemblyInfo\EDXLSharp.snk">
+      <Link>EDXLSharp.snk</Link>
+    </None>
+    <None Include="Resources\CommonTypes.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\edxl-have.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\geo-oasis.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\gml-oasis.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\xAL-types.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\xAL.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\xlink-2003-12-31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\xlinks.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\xNL-types.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\xNL.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\xPIL-types.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Resources\xPIL.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EDXLSharp.CIQLib\EDXLSharp.CIQLib.csproj">
+      <Project>{39092738-AFC8-4915-BA54-FE55B7626AC9}</Project>
+      <Name>EDXLSharp.CIQLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EDXLSharp\EDXLSharp.csproj">
+      <Project>{8DF94F4D-23F5-4803-B5D6-E54028CD3904}</Project>
+      <Name>EDXLSharp</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GeoOASISWhereLib\GeoOASISWhereLib.csproj">
+      <Project>{0CCA1BE9-7450-4EAB-87FF-0356790AF794}</Project>
+      <Name>GeoOASISWhereLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{04622026-6B1C-445D-972A-35CB50217891}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.NIEM.NIEMCommon</RootNamespace>
+    <AssemblyName>EMS.NIEM.NIEMCommon</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile111</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\EMS.NIEM.NIEMCommon.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\EMS.NIEM.NIEMCommon.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\Address.cs">
+      <Link>Address.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\AddressCrossStreet.cs">
+      <Link>AddressCrossStreet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\AltStatus.cs">
+      <Link>AltStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\Constants.cs">
+      <Link>Constants.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\Coordinates.cs">
+      <Link>Coordinates.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\AddressGrid.cs">
+      <Link>CoreWrapper\AddressGrid.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\AreaRegion.cs">
+      <Link>CoreWrapper\AreaRegion.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\DateTimeRange.cs">
+      <Link>CoreWrapper\DateTimeRange.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\AbstractRingType.cs">
+      <Link>CoreWrapper\Geo4NIEM\AbstractRingType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\Axis.cs">
+      <Link>CoreWrapper\Geo4NIEM\Axis.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\Ellipse.cs">
+      <Link>CoreWrapper\Geo4NIEM\Ellipse.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\Exterior.cs">
+      <Link>CoreWrapper\Geo4NIEM\Exterior.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\GML.cs">
+      <Link>CoreWrapper\Geo4NIEM\GML.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\Interior.cs">
+      <Link>CoreWrapper\Geo4NIEM\Interior.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\LinearRing.cs">
+      <Link>CoreWrapper\Geo4NIEM\LinearRing.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\LineString.cs">
+      <Link>CoreWrapper\Geo4NIEM\LineString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\PointProperty.cs">
+      <Link>CoreWrapper\Geo4NIEM\PointProperty.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\PointRep.cs">
+      <Link>CoreWrapper\Geo4NIEM\PointRep.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\Polygon.cs">
+      <Link>CoreWrapper\Geo4NIEM\Polygon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\Pos.cs">
+      <Link>CoreWrapper\Geo4NIEM\Pos.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\posKind.cs">
+      <Link>CoreWrapper\Geo4NIEM\posKind.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\PosList.cs">
+      <Link>CoreWrapper\Geo4NIEM\PosList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\Rotation.cs">
+      <Link>CoreWrapper\Geo4NIEM\Rotation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\Geo4NIEM\UOM_SerializedNumber.cs">
+      <Link>CoreWrapper\Geo4NIEM\UOM_SerializedNumber.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\IdentificationID.cs">
+      <Link>CoreWrapper\IdentificationID.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\LocationEllipse.cs">
+      <Link>CoreWrapper\LocationEllipse.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\LocationExternalPolygon.cs">
+      <Link>CoreWrapper\LocationExternalPolygon.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\LocationLineString.cs">
+      <Link>CoreWrapper\LocationLineString.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CoreWrapper\NIEMDateTime.cs">
+      <Link>CoreWrapper\NIEMDateTime.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\CountryCodeList.cs">
+      <Link>CountryCodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\EventDetails.cs">
+      <Link>EventDetails.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\EventTypeCodeList.cs">
+      <Link>EventTypeCodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\FullTelephoneNumber.cs">
+      <Link>FullTelephoneNumber.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\IncidentLocationExtension.cs">
+      <Link>IncidentLocationExtension.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\LocationStreet.cs">
+      <Link>LocationStreet.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\MGRSCoordinate.cs">
+      <Link>MGRSCoordinate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\Point.cs">
+      <Link>Point.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\ResourceCapability.cs">
+      <Link>ResourceCapability.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\ResourceCapabilityType.cs">
+      <Link>ResourceCapabilityType.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\ResourceComment.cs">
+      <Link>ResourceComment.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\ResourceDefinition.cs">
+      <Link>ResourceDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\ResourceNIMSDefinition.cs">
+      <Link>ResourceNIMSDefinition.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\ResourceNote.cs">
+      <Link>ResourceNote.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\ResourceReference.cs">
+      <Link>ResourceReference.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\ResourceSupportingCoreCapability.cs">
+      <Link>ResourceSupportingCoreCapability.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\SerializationPolyfill.cs">
+      <Link>SerializationPolyfill.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\SyndicationItem.cs">
+      <Link>SyndicationItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\TelephoneNumber.cs">
+      <Link>TelephoneNumber.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\TelephoneNumberRepresentation.cs">
+      <Link>TelephoneNumberRepresentation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\TextStatus.cs">
+      <Link>TextStatus.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\USStateCodeList.cs">
+      <Link>USStateCodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\UTMCoordinate.cs">
+      <Link>UTMCoordinate.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.NIEMCommon\ValidationException.cs">
+      <Link>ValidationException.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.9.0.1\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EDXLcsproj\EMS.EDXL.Shared\EMS.EDXL.Shared.csproj">
+      <Project>{cb0a3fcb-b76c-4b64-b3d7-382965ad7743}</Project>
+      <Name>EMS.EDXL.Shared</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

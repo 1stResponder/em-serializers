@@ -1,0 +1,35 @@
+{
+  "name": "EMS.EDXL.Utilities",
+  "description": "Utilities Libraries for EMS",
+  "authors": [ "ArdentMC" ],
+  "title": "EMS.EDXL.Utilities",
+  "version": "1.0.0-*",
+  "dependencies": {
+    "EMS.EDXL.CT": "1.0.0-*",
+    "EMS.EDXL.Shared": "1.0.0-*",
+    "Microsoft.EntityFrameworkCore": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Relational": "1.1.0",
+    "Microsoft.EntityFrameworkCore.Relational.Specification.Tests": "1.1.0",
+    "Microsoft.EntityFrameworkCore.SqlServer": "1.1.0",
+    "Microsoft.EntityFrameworkCore.SqlServer.Design": "1.1.0",
+    "NETStandard.Library": "1.6.1",
+    "Npgsql": "3.2.1",
+    "System.Collections": "4.3.0",
+    "System.Xml.XmlSerializer": "4.3.0"
+  },
+  "frameworks": {
+    "netstandard1.6.1": {
+      "imports": "dnxcore50"
+    }
+  },
+  "packOptions": {
+    "owners": [ "ArdentMC" ],
+    "tags": [ "EDXL", "EMS", "NIEM" ]
+  },
+  "configurations": {
+    "EDXLDebug": {}
+  },
+  "buildOptions": {
+    "xmlDoc": true
+  }
+}

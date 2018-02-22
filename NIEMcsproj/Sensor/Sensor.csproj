@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{82EE6BFC-A5C0-4E97-B2F1-557D3915943E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EMS.NIEM.Sensor</RootNamespace>
+    <AssemblyName>EMS.NIEM.Sensor</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\EMS.NIEM.Sensor.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>lib\net45\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>lib\net45\EMS.NIEM.Sensor.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Sensor\DeviceDetails.cs">
+      <Link>DeviceDetails.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Sensor\EnvironmentalSensorDetails.cs">
+      <Link>EnvironmentalSensorDetails.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Sensor\PhysiologicalSensorDetails.cs">
+      <Link>PhysiologicalSensorDetails.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Sensor\PowerDetails.cs">
+      <Link>PowerDetails.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Sensor\SensorDetails.cs">
+      <Link>SensorDetails.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Sensor\SensorStatusCodeList.cs">
+      <Link>SensorStatusCodeList.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Sensor\XYLocationSensorDetails.cs">
+      <Link>XYLocationSensorDetails.cs</Link>
+    </Compile>
+    <Compile Include="..\..\NIEM\EMS.NIEM.Sensor\XYZLocationSensorDetails.cs">
+      <Link>XYZLocationSensorDetails.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\EDXLcsproj\Shared\Shared.csproj">
+      <Project>{4fd6d1ad-d67e-4349-909f-f04986279b63}</Project>
+      <Name>Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NIEMCommon\NIEMCommon.csproj">
+      <Project>{e3a9c892-68bd-46c0-88d0-f7dae322582e}</Project>
+      <Name>NIEMCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

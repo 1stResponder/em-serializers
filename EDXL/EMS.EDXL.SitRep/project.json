@@ -1,0 +1,34 @@
+{
+  "name": "EMS.EDXL.SitRep",
+  "description": "SitRep Libraries for EMS",
+  "authors": [ "ArdentMC" ],
+  "title": "EMS.EDXL.SitRep",
+  "version": "1.0.0-*",
+  "dependencies": {
+    "EMS.EDXL.CIQ": "1.0.0-*",
+    "EMS.EDXL.CT": "1.0.0-*",
+    "EMS.EDXL.EXT": "1.0.0-*",
+    "EMS.EDXL.GSF": "1.0.0-*",
+    "EMS.EDXL.Shared": "1.0.0-*",
+    "EMS.EDXL.Utilities": "1.0.0-*",
+    "NETStandard.Library": "1.6.1",
+    "System.Collections": "4.3.0",
+    "System.IO": "4.3.0",
+    "System.Xml.XmlSerializer": "4.3.0"
+  },
+  "frameworks": {
+    "netstandard1.6.1": {
+      "imports": "dnxcore50"
+    }
+  },
+  "packOptions": {
+    "owners": [ "ArdentMC" ],
+    "tags": [ "EDXL", "EMS", "NIEM" ]
+  },
+  "configurations": {
+    "EDXLDebug": {}
+  },
+  "buildOptions": {
+    "xmlDoc": true
+  }
+}
